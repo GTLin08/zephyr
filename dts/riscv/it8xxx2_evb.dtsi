@@ -1,0 +1,136 @@
+/*
+ * Copyright (c) 2020 ITE Corporation. All Rights Reserved.
+ * Copyright (c) 2019-2020 Jyunlin Chen <jyunlin.chen@ite.com.tw>
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <mem.h>
+
+/ {
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu@0 {
+			clock-frequency = <0>;
+			compatible = "riscv-ite";
+			device_type = "cpu";
+			reg = <0>;
+		};
+	};
+
+	soc {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		baseaddr: regbase@F00000 {
+			reg = <0x00F00000 0x4000>;
+		};
+
+		flashctrl: flash-controller@80000000 {
+			compatible = "it8xxx2-flash-controller";
+			reg = <0x80000000 0x100>;
+			label = "fspi";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			flash0: flash@80000000 {
+				compatible = "soc-nv-flash";
+				reg = <0x80000000 DT_SIZE_K(512)>;
+				erase-block-size = <1024>;
+				write-block-size = <1>;
+			};
+		};
+		sram0: memory@80080000 {
+			compatible = "mmio-sram";
+			reg = <0x80080000 DT_SIZE_K(60)>;
+		};
+		intc: interrupt-controller@F03F00 {
+			#interrupt-cells = <1>;
+			compatible = "it8xxx2-intc";
+			interrupt-controller;
+			reg = <0x00F03F00 0x0100>;
+		};
+		uart1: uart@F02700 {
+			compatible = "it8xxx2-uart";
+			reg = <0x00F02700 0x0020>;
+			label = "console";
+			current-speed = <115200>;
+			clock-frequency = <115200>;
+			interrupts = <38>;
+			interrupt-parent = <&intc>;
+		};
+		uart2: uart@F02800 {
+			compatible = "it8xxx2-uart";
+			reg = <0x00F02800 0x0020>;
+			label = "UART_2";
+			current-speed = <460800>;
+			clock-frequency = <460800>;
+			interrupts = <39>;
+			interrupt-parent = <&intc>;
+		};
+		timer: timer@F01f00 {
+			compatible = "it8xxx2-timer";
+			reg = <0x00F01f00 0x0062>;
+			label = "sys_clock";
+			interrupts = <0 30 58 155 156 157 158 159 80>;
+			interrupt-parent = <&intc>;
+		};
+		gpiob: gpio@F01602 {
+			compatible = "it8xxx2-gpio";
+			reg = <0x00F01602 0x0001>;
+			ngpios = <8>;
+			label = "GPDRB";
+			status = "disabled";
+			gpio-controller;
+			interrupts = <106 107 92 108 99 109 110 111>;
+			interrupt-parent = <&intc>;
+			#gpio-cells = <2>;
+		};
+		gpiof: gpio@F01606 {
+			compatible = "it8xxx2-gpio";
+			reg = <0x00F01606 0x0001>;
+			ngpios = <8>;
+			label = "GPDRF";
+			status = "disabled";
+			gpio-controller;
+			interrupts = <101 102 103 104 52 53 54 55 >;
+			interrupt-parent = <&intc>;
+			#gpio-cells = <2>;
+		};
+		gpiom: gpio@F0160D {
+			compatible = "it8xxx2-gpio";
+			reg = <0x00F0160D 0x0001>;
+			ngpios = <8>;
+			label = "GPDRM";
+			status = "disabled";
+			gpio-controller;
+			interrupt-parent = <&intc>;
+			#gpio-cells = <2>;
+		};
+		spi0:spi@F02600  {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "it8xxx2-sspi";
+			reg = <0x00F02600 0x40>;
+			label = "SPI0";
+			interrupt-parent = <&intc>;
+			interrupts = <37>;
+			clock-frequency = <115200>;
+		};
+		spi1:spi@F02640  {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "it8xxx2-sspi";
+			reg = <0x00F02640 0x40>;
+			label = "SPI1";
+			interrupts = <37>;
+			interrupt-parent = <&intc>;
+			status = "okay";
+		};
+	};
+};
