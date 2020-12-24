@@ -10,6 +10,11 @@
 / {
 	model = "IT8XXX2 EV-Board";
 	compatible = "riscv, it8xxx2_evb";
+	aliases {
+		pwm-led0 = &led0;
+		pwm-led1 = &led1;
+
+	};
 	chosen {
 		zephyr,console = &uart1;
 		zephyr,shell-uart = &uart1;
@@ -18,6 +23,17 @@
 		zephyr,flash = &flash0;
 		zephyr,flash-controller = &flashctrl;
 		zephyr,code-partition = &slot0_partition;
+	};
+	leds {
+		compatible = "pwm-leds";
+		led0: led_0 {
+			pwms = <&pwm0 0 0x10>;
+			label = "Green LED";
+		};
+		led1: led_1 {
+			pwms = <&pwm1 7 0>;
+			label = "Blue LED";
+		};
 	};
 };
 &gpiob {
@@ -59,6 +75,16 @@
 	status = "okay";
 	current-speed = <460800>;
 	clock-frequency = <1804800>;
+};
+&pwm0 {
+	pwm-prescaler = <2>;
+	status = "okay";
+	clock-frequency = <100>;
+};
+&pwm1 {
+	pwm-prescaler = <1>;
+	status = "okay";
+	clock-frequency = <30000>;
 };
 &flash0 {
 	partitions {

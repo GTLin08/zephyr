@@ -221,5 +221,19 @@
 			label = "I2C_5";
 			port-num = <5>;
 		};
+		pwm0: pwm@f01800 {
+			compatible = "ite,it8xxx2-pwm";
+			reg = <0xf01800 0x1>;
+			label = "pwm_0";
+			status = "disabled";
+			#pwm-cells = <2>;
+		};
+		pwm1: pwm@f01807 {
+			compatible = "ite,it8xxx2-pwm";
+			reg = <0xf01807 0x1>;
+			label = "pwm_1";
+			status = "disabled";
+			#pwm-cells = <2>;
+		};
 	};
 };
