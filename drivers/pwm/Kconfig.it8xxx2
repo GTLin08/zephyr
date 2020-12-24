@@ -1,0 +1,9 @@
+# IT8XXX2 PWM configuration options
+
+# Copyright (c) 2020 ITE Corporation. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+config PWM_ITE_IT8XXX2
+	bool "ITE IT8XXX2 PWM driver"
+	help
+	   Enable PWM support on it8xxx2_evb
