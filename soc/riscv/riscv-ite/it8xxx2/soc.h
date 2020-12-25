@@ -25,4 +25,25 @@
 #define IT8XXX2_PINMUX_IOF1		0x01
 #define IT8XXX2_PINMUX_PINS		128
 
+/* Memory mapping */
+#define CHIP_ILM_BASE               0x80000000
+#define CONFIG_PROGRAM_MEMORY_BASE  (CHIP_ILM_BASE)
+/* Program is run directly from storage */
+#define CONFIG_MAPPED_STORAGE_BASE CONFIG_PROGRAM_MEMORY_BASE
+
+#define CONFIG_RAM_BASE             0x80100000
+#define CHIP_RAMCODE_BASE (CONFIG_RAM_BASE + 0x2000) /* base+2000h~base+2FFF */
+#define IT83XX_ILM_BLOCK_SIZE       0x00001000
+
+/*
+ * The bit19 of ram code base address is controlled by bit7 of register SCARxH
+ * instead of bit3.
+ */
+#define IT83XX_DAM_ADDR_BIT19_AT_REG_SCARXH_BIT7
+
+#define CONFIG_FLASH_SIZE           0x00100000
+#define CONFIG_FLASH_BANK_SIZE      0x00001000  /* protect bank size */
+
+#define CONFIG_FLASH_ERASE_SIZE     0x00001000  /* erase bank size */
+
 #endif /* __RISCV_ITE_SOC_H_ */

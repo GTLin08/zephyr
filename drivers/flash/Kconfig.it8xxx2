@@ -1,0 +1,10 @@
+# FLASH configuration options
+
+# Copyright (c) 2020 ITE Corporation. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+config SOC_FLASH_ITE_IT8XXX2
+	bool "ITE IT8XXX2 flash driver"
+	help
+	  Enable the ITE it8xxx2 series internal flash driver.
+

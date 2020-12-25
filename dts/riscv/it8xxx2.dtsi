@@ -30,25 +30,25 @@
 
 		flashctrl: flash-controller@80000000 {
 			compatible = "ite,it8xxx2-flash-controller";
-			reg = <0x80000000 0x100>;
+			reg = <0x80000000 0x100000>;
 			label = "fspi";
 			#address-cells = <1>;
 			#size-cells = <1>;
 
 			flash0: flash@80000000 {
 				compatible = "soc-nv-flash";
-				reg = <0x80000000 DT_SIZE_K(512)>;
+				reg = <0x80000000 DT_SIZE_K(1024)>;
 				erase-block-size = <1024>;
-				write-block-size = <1>;
+				write-block-size = <4>;
 			};
 		};
 		pinmux: pinmux@f016f0 {
 			compatible = "ite,it8xxx2-pinmux";
 			reg = <0x00f016f0 0x0010>;
 		};
-		sram0: memory@80080000 {
+		sram0: memory@80103000 {
 			compatible = "mmio-sram";
-			reg = <0x80080000 DT_SIZE_K(60)>;
+			reg = <0x80103000 DT_SIZE_K(48)>;
 		};
 		intc: interrupt-controller@f03f00 {
 			#interrupt-cells = <2>;

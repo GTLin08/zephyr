@@ -84,6 +84,13 @@ aa_loop:
 
 	csrw mscratch, sp
 
+    /* ILM size is 1M bytes */
+    la t0, 0xf02031
+    lb t1, 0(t0)
+    andi t1, t1, 0xf0
+    ori  t1, t1, 0x8
+    sb t1, 0(t0)
+
 #ifdef CONFIG_WDOG_INIT
 	call _WdogInit
 #endif
