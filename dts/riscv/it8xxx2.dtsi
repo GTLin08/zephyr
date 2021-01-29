@@ -96,14 +96,14 @@
 			label = "GPDRB";
 			status = "disabled";
 			gpio-controller;
-			interrupts = <106 IRQ_TYPE_LEVEL_HIGH
-				107 IRQ_TYPE_LEVEL_HIGH
-				92 IRQ_TYPE_LEVEL_HIGH
-				108 IRQ_TYPE_LEVEL_HIGH
-				99 IRQ_TYPE_LEVEL_HIGH
-				109 IRQ_TYPE_LEVEL_HIGH
-				110 IRQ_TYPE_LEVEL_HIGH
-				111 IRQ_TYPE_LEVEL_HIGH>;
+			interrupts = <106 IRQ_TYPE_LEVEL_HIGH>,
+				<107 IRQ_TYPE_LEVEL_HIGH>,
+				<92 IRQ_TYPE_LEVEL_HIGH>,
+				<108 IRQ_TYPE_LEVEL_HIGH>,
+				<99 IRQ_TYPE_LEVEL_HIGH>,
+				<109 IRQ_TYPE_LEVEL_HIGH>,
+				<110 IRQ_TYPE_LEVEL_HIGH>,
+				<111 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-parent = <&intc>;
 			#gpio-cells = <2>;
 		};
@@ -114,14 +114,14 @@
 			label = "GPDRF";
 			status = "disabled";
 			gpio-controller;
-			interrupts = <101 IRQ_TYPE_LEVEL_HIGH
-				102 IRQ_TYPE_LEVEL_HIGH
-				103 IRQ_TYPE_LEVEL_HIGH
-				104 IRQ_TYPE_LEVEL_HIGH
-				52 IRQ_TYPE_LEVEL_HIGH
-				53 IRQ_TYPE_LEVEL_HIGH
-				54 IRQ_TYPE_LEVEL_HIGH
-				55 IRQ_TYPE_LEVEL_HIGH>;
+			interrupts = <101 IRQ_TYPE_LEVEL_HIGH>,
+				<102 IRQ_TYPE_LEVEL_HIGH>,
+				<103 IRQ_TYPE_LEVEL_HIGH>,
+				<104 IRQ_TYPE_LEVEL_HIGH>,
+				<52 IRQ_TYPE_LEVEL_HIGH>,
+				<53 IRQ_TYPE_LEVEL_HIGH>,
+				<54 IRQ_TYPE_LEVEL_HIGH>,
+				<55 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-parent = <&intc>;
 			#gpio-cells = <2>;
 		};

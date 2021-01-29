@@ -10,6 +10,11 @@
 / {
 	model = "IT8XXX2 EV-Board";
 	compatible = "riscv, it8xxx2_evb";
+	aliases {
+		led0 = &room_led;
+		gpiob = &gpiob;
+		gpiof = &gpiof;
+	};
 	chosen {
 		zephyr,console = &uart1;
 		zephyr,shell-uart = &uart1;
@@ -18,6 +23,14 @@
 		zephyr,flash = &flash0;
 		zephyr,flash-controller = &flashctrl;
 		zephyr,code-partition = &slot0_partition;
+	};
+	leds {
+		compatible = "gpio-leds";
+		room_led: led_0 {
+			gpios = <&gpiof 6 (1 << 9 | 1 << 10)>;
+			label = "Room LED";
+			status = "okay";
+		};
 	};
 };
 &gpiob {

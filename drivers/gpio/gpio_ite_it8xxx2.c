@@ -13,7 +13,7 @@
 #include <logging/log.h>
 #include "gpio_utils.h"
 
-#define DT_DRV_COMPAT		ite_it8xxx2_gpio
+#define DT_DRV_COMPAT ite_it8xxx2_gpio
 #define GPIO_LOW		0
 #define GPIO_HIGH		1
 #define NUM_IO_MAX		8
@@ -104,6 +104,7 @@ static volatile uint8_t *const reg_ipolr[] = {
 struct gpio_ite_cfg {
 	uint32_t reg_addr;	/* gpio register base address */
 	uint8_t gpio_irq[8];	/* gpio's irq */
+	void (*irq_config_func)(void);
 };
 
 /*
@@ -165,14 +166,16 @@ static int gpio_ite_configure(const struct device *dev,
 	uint32_t gpcr_reg;
 	uint32_t gpcr_reg_addr;
 
+	printk("[gpio]pin=%x, flags=%x\n", pin, flags);
+
 	/* counting the gpio control register's base address */
 	gpcr_reg = ((gpio_config->reg_addr & 0xff) - 1) * NUM_IO_MAX
 			+ gpcr_offset;
 	gpcr_reg_addr = gpcr_reg | (gpio_config->reg_addr & 0xffffff00);
-	if (!(flags & GPIO_SINGLE_ENDED)) {
+	//if (!(flags & GPIO_SINGLE_ENDED)) {
 		/* Pin open-source/open-drain is not supported */
-		return -ENOTSUP;
-	}
+	//	return -ENOTSUP;
+	//}
 	if ((flags & GPIO_OUTPUT) && (flags & GPIO_INPUT)) {
 		/* Pin cannot be configured as input and output */
 		return -ENOTSUP;
@@ -222,6 +225,8 @@ static int gpio_ite_port_set_bits_raw(const struct device *dev,
 {
 	const struct gpio_ite_cfg *gpio_config = DEV_GPIO_CFG(dev);
 	uint32_t port_val;
+
+	printk("[gpio]set- pins=%x\n", pins);
 
 	port_val = get_port(gpio_config);
 	port_val |= pins;
@@ -301,8 +306,12 @@ static int gpio_ite_pin_interrupt_configure(const struct device *dev,
 	volatile uint8_t *trig_mode;
 	volatile uint8_t *hl_trig;
 
+	printk("[gpio-interrupt]pin=%x,trig=%x\n", pin, trig);
+	printk("[gpio-interrupt]gpio_irq=%d\n", gpio_config->gpio_irq[pin]);
+
 	g = gpio_config->gpio_irq[pin] / NUM_IO_MAX;
 	i = gpio_config->gpio_irq[pin] % NUM_IO_MAX;
+
 	trig_mode = reg_ielmr[g];
 	hl_trig = reg_ipolr[g];
 
@@ -346,6 +355,9 @@ static int gpio_ite_pin_interrupt_configure(const struct device *dev,
 	ret = irq_connect_dynamic(
 		gpio_config->gpio_irq[pin], 0, gpio_ite_isr, dev, 0);
 	ite_intc_irq_enable(gpio_config->gpio_irq[pin]);
+
+	printk("[gpio-interrupt]ret=%d\n", ret);
+
 	return ret;
 }
 
@@ -365,14 +377,91 @@ static int gpio_ite_init(const struct device *dev)
 	const struct gpio_ite_cfg *gpio_config = DEV_GPIO_CFG(dev);
 	int i;
 
+	printk("[gpio]reg_addr=%x\n", gpio_config->reg_addr);
+
 	for (i = 0; i < NUM_IO_MAX; i++) {
 		/* init disable intc */
 		ite_intc_irq_disable(gpio_config->gpio_irq[i]);
+		printk("[gpio]gpio_irq=%d\n", gpio_config->gpio_irq[i]);
+
 	}
 
 	return 0;
 }
 
+#if 0
+#define IRQ_INIT(inst, idx)					\
+			IRQ_CONNECT(DT_INST_IRQ_BY_IDX(inst, idx, irq), 		\
+					DT_INST_IRQ_BY_IDX(inst, idx, priority),	\
+					gpio_ite_isr,			\
+					DEVICE_DT_INST_GET(inst),				\
+					0);
+
+static void gpio_ite_cfg_irq_func_0(void)
+{
+#if DT_INST_IRQ_HAS_IDX(0, 0)
+	IRQ_INIT(0, 0);
+#endif
+#if DT_INST_IRQ_HAS_IDX(0, 1)
+	IRQ_INIT(0, 1);
+#endif
+}
+static void gpio_ite_cfg_irq_func_1(void)
+{
+#if DT_INST_IRQ_HAS_IDX(1, 0)
+	IRQ_INIT(1, 0);
+#endif
+}
+
+#define GPIO_ITE_DEV_INIT(inst)                                    \
+		static void gpio_ite_cfg_irq_func_##inst(void);                \
+		static struct gpio_ite_data gpio_ite_data_##inst; \
+		static const struct gpio_ite_cfg gpio_ite_cfg_##inst = {       \
+			.reg_addr = DT_INST_REG_ADDR(inst),\
+			.irq_config_func = gpio_ite_cfg_irq_func_##inst,         \
+			.gpio_irq[0] = DT_INST_IRQ_BY_IDX(inst, 0, irq),	\
+			.gpio_irq[1] = DT_INST_IRQ_BY_IDX(inst, 1, irq),	\
+		}; \
+	DEVICE_DT_INST_DEFINE(inst, \
+			gpio_ite_init, \
+			device_pm_control_nop, \
+			&gpio_ite_data_##inst, \
+			&gpio_ite_cfg_##inst, \
+			POST_KERNEL, \
+			CONFIG_KERNEL_INIT_PRIORITY_DEFAULT, \
+			&gpio_ite_driver_api);
+
+DT_INST_FOREACH_STATUS_OKAY(GPIO_ITE_DEV_INIT)
+#endif
+
+#if 1
+#define GPIO_ITE_DEV_CFG_DATA(n, idx) \
+static struct gpio_ite_data gpio_ite_data_##n##_##idx; \
+static const struct gpio_ite_cfg gpio_ite_cfg_##n##_##idx = { \
+	.reg_addr = DT_REG_ADDR(DT_NODELABEL(n)),\
+	.gpio_irq[idx] = DT_IRQ_BY_IDX(DT_NODELABEL(n), idx, irq),	\
+	}; \
+DEVICE_DT_DEFINE(DT_NODELABEL(n), \
+		gpio_ite_init, \
+		device_pm_control_nop, \
+		&gpio_ite_data_##n##_##idx, \
+		&gpio_ite_cfg_##n##_##idx, \
+		POST_KERNEL, \
+		CONFIG_KERNEL_INIT_PRIORITY_DEFAULT, \
+		&gpio_ite_driver_api);
+#if DT_NODE_HAS_STATUS(DT_NODELABEL(gpiob), okay)
+GPIO_ITE_DEV_CFG_DATA(gpiob, 0);
+#endif /* gpiob */
+#if DT_NODE_HAS_STATUS(DT_NODELABEL(gpiof), okay)
+GPIO_ITE_DEV_CFG_DATA(gpiof, 1);
+#endif /* gpio_leds */
+#if DT_NODE_HAS_STATUS(DT_NODELABEL(gpiof), okay)
+//GPIO_ITE_DEV_CFG_DATA(gpiof, 2);
+#endif /* gpio_leds */
+
+#endif
+
+#if 0
 #define GPIO_ITE_DEV_CFG_DATA(n, idx) \
 static struct gpio_ite_data gpio_ite_data_##n##_##idx; \
 static const struct gpio_ite_cfg gpio_ite_cfg_##n##_##idx = { \
@@ -386,10 +475,15 @@ DEVICE_DT_DEFINE(DT_NODELABEL(n), \
 		&gpio_ite_cfg_##n##_##idx, \
 		POST_KERNEL, \
 		CONFIG_KERNEL_INIT_PRIORITY_DEFAULT, \
-		&gpio_ite_driver_api)
+		&gpio_ite_driver_api);
 #if DT_NODE_HAS_STATUS(DT_NODELABEL(gpiob), okay)
 GPIO_ITE_DEV_CFG_DATA(gpiob, 0);
 #endif /* gpiob */
 #if DT_NODE_HAS_STATUS(DT_NODELABEL(gpiof), okay)
 GPIO_ITE_DEV_CFG_DATA(gpiof, 1);
-#endif /* gpiof */
+#endif /* gpio_leds */
+#if DT_NODE_HAS_STATUS(DT_NODELABEL(gpiof), okay)
+GPIO_ITE_DEV_CFG_DATA(gpiof, 2);
+#endif /* gpio_leds */
+
+#endif
