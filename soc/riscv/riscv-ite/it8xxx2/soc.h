@@ -23,6 +23,6 @@
 /* PINMUX config */
 #define IT8XXX2_PINMUX_IOF0		0x00
 #define IT8XXX2_PINMUX_IOF1		0x01
-#define IT8XXX2_PINMUX_PINS		128
+#define IT8XXX2_PINMUX_PINS		8
 
 #endif /* __RISCV_ITE_SOC_H_ */

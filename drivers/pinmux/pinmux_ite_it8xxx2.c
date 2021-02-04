@@ -30,19 +30,22 @@ static int pinmux_it8xxx2_set(const struct device *dev,
 	const struct pinmux_it8xxx2_config *config = DEV_CFG(dev);
 	uint32_t reg;
 	uint8_t val;
-	int g, i;
+
+	printk("dev=%p\n",dev);
+	printk("config->base=%lx, pin=%d\n",config->base ,pin);
 
 	if (func > IT8XXX2_PINMUX_IOF1 || pin >= IT8XXX2_PINMUX_PINS) {
 		return -EINVAL;
 	}
-	g =  pin / PIN_REG_OFFSET;
-	i =  pin % PIN_REG_OFFSET;
-	reg = config->base + g;
+
+	reg = config->base + pin;
 	val = sys_read8(reg);
-	if (func == IT8XXX2_PINMUX_IOF1) {
-		sys_write8((val | IT8XXX2_PINMUX_IOF1 << i), reg);
-	} else {
-		sys_write8((val & ~(IT8XXX2_PINMUX_IOF1 << i)), reg);
+	if (func == IT8XXX2_PINMUX_IOF0) {
+		sys_write8((val &= ~(GPCR_PORT_PIN_MODE_INPUT |
+			GPCR_PORT_PIN_MODE_OUTPUT)), reg);
+	} else if (func == IT8XXX2_PINMUX_IOF1){
+		sys_write8((val | GPCR_PORT_PIN_MODE_INPUT) &
+			~GPCR_PORT_PIN_MODE_OUTPUT, reg);
 	}
 
 	return 0;
@@ -54,17 +57,16 @@ static int pinmux_it8xxx2_get(const struct device *dev,
 	const struct pinmux_it8xxx2_config *config = DEV_CFG(dev);
 	uint32_t reg;
 	uint8_t val;
-	int g, i;
 
 	if (pin >= IT8XXX2_PINMUX_PINS || func == NULL) {
 		return -EINVAL;
 	}
-	g =  pin / PIN_REG_OFFSET;
-	i =  pin % PIN_REG_OFFSET;
-	reg = config->base + g;
+
+	reg = config->base + pin;
 	val = sys_read8(reg);
-	*func = (val & (IT8XXX2_PINMUX_IOF1 << pin)) ?
-		IT8XXX2_PINMUX_IOF1 : IT8XXX2_PINMUX_IOF0;
+
+	*func = (val & GPCR_PORT_PIN_MODE_INPUT) ?
+		IT8XXX2_PINMUX_IOF1 : IT8XXX2_PINMUX_IOF0;	
 
 	return 0;
 }
@@ -83,6 +85,10 @@ static int pinmux_it8xxx2_input(const struct device *dev,
 
 static int pinmux_it8xxx2_init(const struct device *dev)
 {
+	const struct pinmux_it8xxx2_config *config = DEV_CFG(dev);
+
+	printk("pinmux_it8xxx2_init-base=%lx\n",config->base);
+
 	return 0;
 }
 
@@ -93,11 +99,17 @@ static const struct pinmux_driver_api pinmux_it8xxx2_driver_api = {
 	.input = pinmux_it8xxx2_input,
 };
 
-static const struct pinmux_it8xxx2_config pinmux_it8xxx2_0_config = {
-	.base = DT_INST_REG_ADDR(0),
-};
+#define PINMUX_ITE_INIT(inst)						\
+	static const struct pinmux_it8xxx2_config pinmux_it8xxx2_cfg_##inst = {\
+		.base = DT_INST_REG_ADDR(inst),		\
+	};								\
+									\
+	DEVICE_DT_INST_DEFINE(inst,					\
+			    &pinmux_it8xxx2_init,				\
+			    device_pm_control_nop,			\
+			    NULL, &pinmux_it8xxx2_cfg_##inst,		\
+			    POST_KERNEL,				\
+			    CONFIG_KERNEL_INIT_PRIORITY_DEFAULT,	\
+			    &pinmux_it8xxx2_driver_api);
 
-DEVICE_DT_INST_DEFINE(0, &pinmux_it8xxx2_init, device_pm_control_nop,
-		    NULL, &pinmux_it8xxx2_0_config,
-		    PRE_KERNEL_1, CONFIG_KERNEL_INIT_PRIORITY_DEFAULT,
-		    &pinmux_it8xxx2_driver_api);
+DT_INST_FOREACH_STATUS_OKAY(PINMUX_ITE_INIT)

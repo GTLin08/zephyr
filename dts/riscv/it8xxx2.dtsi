@@ -46,6 +46,61 @@
 			compatible = "ite,it8xxx2-pinmux";
 			reg = <0x00f016f0 0x0010>;
 		};
+		pinmuxa: pinmux@f01610 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01610 0x0008>;
+			label = "PINMUXA";
+		};
+		pinmuxb: pinmux@f01618 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01618 0x0008>;
+			label = "PINMUXB";
+		};
+		pinmuxc: pinmux@f01620 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01620 0x0008>;
+			label = "PINMUXC";
+		};
+		pinmuxd: pinmux@f01628 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01628 0x0008>;
+			label = "PINMUXD";
+		};
+		pinmuxe: pinmux@f01630 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01630 0x0008>;
+			label = "PINMUXE";
+		};
+		pinmuxf: pinmux@f01638 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01638 0x0008>;
+			label = "PINMUXF";
+		};
+		pinmuxg: pinmux@f01640 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01640 0x0008>;
+			label = "PINMUXG";
+		};
+		pinmuxh: pinmux@f01648 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01648 0x0008>;
+			label = "PINMUXH";
+		};
+		pinmuxi: pinmux@f01650 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01650 0x0008>;
+			label = "PINMUXI";
+		};
+		pinmuxj: pinmux@f01658 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f01658 0x0008>;
+			label = "PINMUXJ";
+		};
+		pinmuxm: pinmux@f016a0 {
+			compatible = "ite,it8xxx2-pinmux";
+			reg = <0x00f016a0 0x0008>;
+			label = "PINMUXM";
+		};
 		sram0: memory@80080000 {
 			compatible = "mmio-sram";
 			reg = <0x80080000 DT_SIZE_K(60)>;

@@ -18,12 +18,23 @@ static int ite_it8xxx2_init(const struct device *arg)
 	/* uart1 board init */
 	CGCTRL3R &= ~(BIT(2));
 	AUTOCG &= ~(BIT(6));
-	RSTDMMC |= BIT(3);	/* Set EC side control */
-	RSTC4 = BIT(1);	/* W-One to reset controller */
+	/*
+	 * bit3: uart1 belongs to the EC side.
+	 * This is necessary for enabling eSPI module.
+	 */
+	RSTDMMC |= BIT(3);
+	/* reset uart before config it */
+	RSTC4 = BIT(1);
+
 	GPCRB0 = 0x00;		/* tx pin init */
 	GPCRB1 = 0x00;		/* rx pin init */
 	GPCRF3 = 0x00;		/* rts pin init */
 	GPCRD5 = 0x00;		/* cts pin init */
+
+	/* switch UART1 on without hardware flow control */
+	GCR1 |= 0x01;
+	GCR6 |= 0x03;
+
 #endif /* DT_NODE_HAS_STATUS(DT_NODELABEL(uart1), okay) */
 
 #if DT_NODE_HAS_STATUS(DT_NODELABEL(uart2), okay)
