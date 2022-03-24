@@ -1209,6 +1209,7 @@
 			clock-gate-offset = <CGC_OFFSET_SMBA>;
 			pinctrl-0 = <&pinctrl_i2c_clk0    /* GPB3 */
 				     &pinctrl_i2c_data0>; /* GPB4 */
+			pinctrl-names = "default";
 		};
 
 		i2c1: i2c@f01c80 {
@@ -1225,6 +1226,7 @@
 			clock-gate-offset = <CGC_OFFSET_SMBB>;
 			pinctrl-0 = <&pinctrl_i2c_clk1    /* GPC1 */
 				     &pinctrl_i2c_data1>; /* GPC2 */
+			pinctrl-names = "default";
 		};
 
 		i2c2: i2c@f01cc0 {
@@ -1241,6 +1243,7 @@
 			clock-gate-offset = <CGC_OFFSET_SMBC>;
 			pinctrl-0 = <&pinctrl_i2c_clk2    /* GPF6 */
 				     &pinctrl_i2c_data2>; /* GPF7 */
+			pinctrl-names = "default";
 		};
 
 		i2c3: i2c@f03680 {
@@ -1257,6 +1260,7 @@
 			clock-gate-offset = <CGC_OFFSET_SMBD>;
 			pinctrl-0 = <&pinctrl_i2c_clk3_gph1    /* GPH1 */
 				     &pinctrl_i2c_data3_gph2>; /* GPH2 */
+			pinctrl-names = "default";
 		};
 
 		i2c4: i2c@f03500 {
@@ -1273,6 +1277,7 @@
 			clock-gate-offset = <CGC_OFFSET_SMBE>;
 			pinctrl-0 = <&pinctrl_i2c_clk4    /* GPE0 */
 				     &pinctrl_i2c_data4>; /* GPE7 */
+			pinctrl-names = "default";
 		};
 
 		i2c5: i2c@f03580 {
@@ -1289,6 +1294,7 @@
 			clock-gate-offset = <CGC_OFFSET_SMBF>;
 			pinctrl-0 = <&pinctrl_i2c_clk5    /* GPA4 */
 				     &pinctrl_i2c_data5>; /* GPA5 */
+			pinctrl-names = "default";
 		};
 
 		ecpm: clock-controller@f01e00 {

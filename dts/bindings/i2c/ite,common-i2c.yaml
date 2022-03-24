@@ -3,7 +3,7 @@
 
 description: Common fields for ITE it8xxx2 I2C
 
-include: i2c-controller.yaml
+include: [i2c-controller.yaml, pinctrl-device.yaml]
 
 properties:
     reg:
@@ -21,14 +21,6 @@ properties:
         type: phandle
         required: true
         description: Get the handle of the GPIO device
-
-    pinctrl-0:
-      type: phandles
-      required: true
-      description: |
-        Configuration of I2C SCL and SDA pinmux controller.
-        The SCL pin must be specified first and the SDA pin
-        second in the pinctrl-0 array.
 
     clock-gate-offset:
       type: int

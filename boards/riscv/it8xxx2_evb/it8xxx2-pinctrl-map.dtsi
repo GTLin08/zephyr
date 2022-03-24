@@ -45,6 +45,50 @@
 		pinmux = <IT8XXX2_PINMUX('L', 3, IT8XXX2_PINMUX_FUNC_1)>;
 	};
 
+	/* I2C alternate function */
+	pinctrl_i2c_clk0: i2c_clk0 {
+		pinmux = <IT8XXX2_PINMUX('B', 3, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_i2c_data0: i2c_data0 {
+		pinmux = <IT8XXX2_PINMUX('B', 4, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_i2c_clk1: i2c_clk1 {
+		pinmux = <IT8XXX2_PINMUX('C', 1, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_i2c_data1: i2c_data1 {
+		pinmux = <IT8XXX2_PINMUX('C', 2, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_i2c_clk2: i2c_clk2 {
+		pinmux = <IT8XXX2_PINMUX('F', 6, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_i2c_data2: i2c_data2 {
+		pinmux = <IT8XXX2_PINMUX('F', 7, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_i2c_clk3_gph1: i2c_clk3_gph1 {
+		pinmux = <IT8XXX2_PINMUX('H', 1, IT8XXX2_PINMUX_FUNC_3)>;
+	};
+	pinctrl_i2c_data3_gph2: i2c_data3_gph2 {
+		pinmux = <IT8XXX2_PINMUX('H', 2, IT8XXX2_PINMUX_FUNC_3)>;
+	};
+	pinctrl_i2c_clk3_gpf2: i2c_clk3_gpf2 {
+		pinmux = <IT8XXX2_PINMUX('F', 2, IT8XXX2_PINMUX_FUNC_4)>;
+	};
+	pinctrl_i2c_data3_gpf3: i2c_data3_gpf3 {
+		pinmux = <IT8XXX2_PINMUX('F', 3, IT8XXX2_PINMUX_FUNC_4)>;
+	};
+	pinctrl_i2c_clk4: i2c_clk4 {
+		pinmux = <IT8XXX2_PINMUX('E', 0, IT8XXX2_PINMUX_FUNC_3)>;
+	};
+	pinctrl_i2c_data4: i2c_data4 {
+		pinmux = <IT8XXX2_PINMUX('E', 7, IT8XXX2_PINMUX_FUNC_3)>;
+	};
+	pinctrl_i2c_clk5: i2c_clk5 {
+		pinmux = <IT8XXX2_PINMUX('A', 4, IT8XXX2_PINMUX_FUNC_3)>;
+	};
+	pinctrl_i2c_data5: i2c_data5 {
+		pinmux = <IT8XXX2_PINMUX('A', 5, IT8XXX2_PINMUX_FUNC_3)>;
+	};
+
 	/* UART alternate function */
 	pinctrl_uart1_rx: uart1_rx {
 		pinmux = <IT8XXX2_PINMUX('B', 0, IT8XXX2_PINMUX_FUNC_3)>;
