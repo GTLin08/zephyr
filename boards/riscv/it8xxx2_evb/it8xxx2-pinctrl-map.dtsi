@@ -7,6 +7,44 @@
 #include <dt-bindings/pinctrl/it8xxx2-pinctrl.h>
 
 &pinctrl {
+	/* ADC alternate function */
+	pinctrl_adc0: adc0 {
+		pinmux = <IT8XXX2_PINMUX('I', 0, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc1: adc1 {
+		pinmux = <IT8XXX2_PINMUX('I', 1, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc2: adc2 {
+		pinmux = <IT8XXX2_PINMUX('I', 2, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc3: adc3 {
+		pinmux = <IT8XXX2_PINMUX('I', 3, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc4: adc4 {
+		pinmux = <IT8XXX2_PINMUX('I', 4, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc5: adc5 {
+		pinmux = <IT8XXX2_PINMUX('I', 5, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc6: adc6 {
+		pinmux = <IT8XXX2_PINMUX('I', 6, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc7: adc7 {
+		pinmux = <IT8XXX2_PINMUX('I', 7, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc13: adc13 {
+		pinmux = <IT8XXX2_PINMUX('L', 0, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc14: adc14 {
+		pinmux = <IT8XXX2_PINMUX('L', 1, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc15: adc15 {
+		pinmux = <IT8XXX2_PINMUX('L', 2, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_adc16: adc16 {
+		pinmux = <IT8XXX2_PINMUX('L', 3, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+
 	/* UART alternate function */
 	pinctrl_uart1_rx: uart1_rx {
 		pinmux = <IT8XXX2_PINMUX('B', 0, IT8XXX2_PINMUX_FUNC_3)>;

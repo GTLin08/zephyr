@@ -1102,6 +1102,7 @@
 				     &pinctrl_adc14  /* ADC14*/
 				     &pinctrl_adc15  /* ADC15*/
 				     &pinctrl_adc16>;/* ADC16*/
+			pinctrl-names = "default";
 		};
 		vcmp0: vcmp@f01946 {
 			compatible = "ite,it8xxx2-vcmp";
