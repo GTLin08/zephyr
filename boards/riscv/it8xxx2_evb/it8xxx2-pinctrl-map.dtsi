@@ -89,6 +89,32 @@
 		pinmux = <IT8XXX2_PINMUX('A', 5, IT8XXX2_PINMUX_FUNC_3)>;
 	};
 
+	/* PWM alternate function */
+	pinctrl_pwm0: pwm0 {
+		pinmux = <IT8XXX2_PINMUX('A', 0, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_pwm1: pwm1 {
+		pinmux = <IT8XXX2_PINMUX('A', 1, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_pwm2: pwm2 {
+		pinmux = <IT8XXX2_PINMUX('A', 2, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_pwm3: pwm3 {
+		pinmux = <IT8XXX2_PINMUX('A', 3, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_pwm4: pwm4 {
+		pinmux = <IT8XXX2_PINMUX('A', 4, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_pwm5: pwm5 {
+		pinmux = <IT8XXX2_PINMUX('A', 5, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_pwm6: pwm6 {
+		pinmux = <IT8XXX2_PINMUX('A', 6, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_pwm7: pwm7 {
+		pinmux = <IT8XXX2_PINMUX('A', 7, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+
 	/* UART alternate function */
 	pinctrl_uart1_rx: uart1_rx {
 		pinmux = <IT8XXX2_PINMUX('B', 0, IT8XXX2_PINMUX_FUNC_3)>;
