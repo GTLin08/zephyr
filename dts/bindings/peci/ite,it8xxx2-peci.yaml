@@ -5,10 +5,4 @@ description: ITE it8xxx2 PECI
 
 compatible: "ite,peci-it8xxx2"
 
-include: peci.yaml
-
-properties:
-        pinctrl-0:
-                type: phandles
-                required: true
-                description: Configuration of the PECI pin which is mapped to the GPIO
+include: [peci.yaml, pinctrl-device.yaml]

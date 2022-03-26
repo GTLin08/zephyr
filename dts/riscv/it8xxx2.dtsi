@@ -1462,6 +1462,7 @@
 			interrupt-parent = <&intc>;
 			interrupts = <160 IRQ_TYPE_LEVEL_HIGH>;
 			pinctrl-0 = <&pinctrl_peci>;
+			pinctrl-names = "default";
 		};
 
 		kscan0: kscan@f01d00 {
