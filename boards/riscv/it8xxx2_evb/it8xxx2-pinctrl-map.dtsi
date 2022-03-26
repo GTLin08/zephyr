@@ -89,6 +89,14 @@
 		pinmux = <IT8XXX2_PINMUX('A', 5, IT8XXX2_PINMUX_FUNC_3)>;
 	};
 
+	/* Keyboard alternate function */
+	pinctrl_kso16: kso16 {
+		pinmux = <IT8XXX2_PINMUX('C', 3, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_kso17: kso17 {
+		pinmux = <IT8XXX2_PINMUX('C', 5, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+
 	/* PECI alternate function */
 	pinctrl_peci: peci {
 		pinmux = <IT8XXX2_PINMUX('F', 6, IT8XXX2_PINMUX_FUNC_3)>;

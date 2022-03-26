@@ -1483,6 +1483,7 @@
 			gpio-dev = <&gpioc>;
 			pinctrl-0 = <&pinctrl_kso16   /* GPC3 */
 				     &pinctrl_kso17>; /* GPC5 */
+			pinctrl-names = "default";
 		};
 	};
 };
