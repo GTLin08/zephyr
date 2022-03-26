@@ -115,6 +115,20 @@
 		pinmux = <IT8XXX2_PINMUX('A', 7, IT8XXX2_PINMUX_FUNC_1)>;
 	};
 
+	/* Tachometer alternate function */
+	pinctrl_tach0a: tach0a {
+		pinmux = <IT8XXX2_PINMUX('D', 6, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_tach0b: tach0b {
+		pinmux = <IT8XXX2_PINMUX('J', 2, IT8XXX2_PINMUX_FUNC_3)>;
+	};
+	pinctrl_tach1a: tach1a {
+		pinmux = <IT8XXX2_PINMUX('D', 7, IT8XXX2_PINMUX_FUNC_1)>;
+	};
+	pinctrl_tach1b: tach1b {
+		pinmux = <IT8XXX2_PINMUX('J', 3, IT8XXX2_PINMUX_FUNC_3)>;
+	};
+
 	/* UART alternate function */
 	pinctrl_uart1_rx: uart1_rx {
 		pinmux = <IT8XXX2_PINMUX('B', 0, IT8XXX2_PINMUX_FUNC_3)>;

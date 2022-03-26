@@ -1431,6 +1431,7 @@
 			status = "disabled";
 			pinctrl-0 = <&pinctrl_tach0a   /* GPD6 */
 				     &pinctrl_tach0b>; /* GPJ2 */
+			pinctrl-names = "default";
 		};
 		tach1: tach@f01820 {
 			compatible = "ite,it8xxx2-tach";
@@ -1443,6 +1444,7 @@
 			status = "disabled";
 			pinctrl-0 = <&pinctrl_tach1a   /* GPD7 */
 				     &pinctrl_tach1b>; /* GPJ3 */
+			pinctrl-names = "default";
 		};
 
 		gctrl: general-control@f02000 {
