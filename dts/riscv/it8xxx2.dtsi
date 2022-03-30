@@ -667,6 +667,8 @@
 			port-num = <1>;
 			gpios = <&gpiob 0 0>;
 			uart-dev = <&uart1>;
+			pinctrl-0 = <&pinctrl_uart1_rx &pinctrl_uart1_tx>;
+			pinctrl-names = "default";
 		};
 
 		ite_uart2_wrapper: uartwrapper@f02820 {
@@ -677,6 +679,8 @@
 			port-num = <2>;
 			gpios = <&gpioh 1 0>;
 			uart-dev = <&uart2>;
+			pinctrl-0 = <&pinctrl_uart2_rx &pinctrl_uart2_tx>;
+			pinctrl-names = "default";
 		};
 
 		twd0: watchdog@f01f00 {
