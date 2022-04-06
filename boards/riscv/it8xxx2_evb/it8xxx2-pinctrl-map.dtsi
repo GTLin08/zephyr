@@ -10,15 +10,20 @@
 	/* UART alternate function */
 	pinctrl_uart1_rx: uart1_rx {
 		pinmuxs = <&pinctrlb 0 IT8XXX2_PINMUX_FUNC_3>;
+		bias-pull-up;
 	};
 	pinctrl_uart1_tx: uart1_tx {
 		pinmuxs = <&pinctrlb 1 IT8XXX2_PINMUX_FUNC_3>;
+		bias-pull-down;
 	};
 	pinctrl_uart2_rx: uart2_rx {
 		pinmuxs = <&pinctrlh 1 IT8XXX2_PINMUX_FUNC_4>;
+		bias-high-impedance;
+		gpio-voltage-1p8;
 	};
 	pinctrl_uart2_tx: uart2_tx {
 		pinmuxs = <&pinctrlh 2 IT8XXX2_PINMUX_FUNC_4>;
+		input-enable;
 	};
 
 };

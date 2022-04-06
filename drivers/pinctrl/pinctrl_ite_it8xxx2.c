@@ -10,7 +10,7 @@
 #include <drivers/pinctrl.h>
 
 #include <logging/log.h>
-LOG_MODULE_REGISTER(pinctrl_ite_it8xxx2, LOG_LEVEL_ERR);
+LOG_MODULE_REGISTER(pinctrl_ite_it8xxx2, LOG_LEVEL_DBG);
 
 #define GPIO_IT8XXX2_REG_BASE \
 	((struct gpio_it8xxx2_regs *)DT_REG_ADDR(DT_NODELABEL(gpiogcr)))
@@ -58,8 +58,11 @@ int pinctrl_configure_pins(const pinctrl_soc_pin_t *pins, uint8_t pin_cnt,
 
 		/* Handle GPIO pin configuration. */
 		if (pins[i].pincfg) {
+			LOG_DBG("[pinctrl]pincfg=%x",pins[i].pincfg);
 			gpio_pin_configure(gpio_device, pin, pins[i].pincfg);
 		}
+
+		LOG_DBG("[pinctrl]=== pin=%x===",pin);
 
 		/* Common settings for alternate function. */
 		*reg_gpcr &= ~(GPCR_PORT_PIN_MODE_INPUT |
@@ -80,6 +83,7 @@ int pinctrl_configure_pins(const pinctrl_soc_pin_t *pins, uint8_t pin_cnt,
 			 *        Func3 also need to set the general control.
 			 */
 			*reg_func3_gcr |= pinctrl_config->func3_en_mask[pin];
+			//LOG_DBG("[pinctrl]reg_func3_gcr=%p", reg_func3_gcr);
 			break;
 		case IT8XXX2_PINMUX_FUNC_4:
 			/*
@@ -87,6 +91,7 @@ int pinctrl_configure_pins(const pinctrl_soc_pin_t *pins, uint8_t pin_cnt,
 			 *        Func4 also need to set the general control.
 			 */
 			*reg_func4_gcr |= pinctrl_config->func4_en_mask[pin];
+			//LOG_DBG("[pinctrl]reg_func4_gcr=%p", reg_func4_gcr);
 			break;
 		case IT8XXX2_PINMUX_DEFAULT:
 			*reg_gpcr |= GPCR_PORT_PIN_MODE_INPUT;
