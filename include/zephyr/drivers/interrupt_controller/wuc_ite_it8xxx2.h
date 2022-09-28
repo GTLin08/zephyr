@@ -10,6 +10,18 @@
 #include <zephyr/device.h>
 #include <stdint.h>
 
+/* Driver config */
+struct it8xxx2_wuc_cfg {
+	/* WUC wakeup edge mode register */
+	uint8_t *reg_wuemr;
+	/* WUC wakeup edge sense register */
+	uint8_t *reg_wuesr;
+	/* WUC wakeup enable register */
+	uint8_t *reg_wuenr;
+	/* WUC wakeup both edge mode register */
+	uint8_t *reg_wubemr;
+};
+
 /**
  * @brief A trigger condition on the corresponding input generates
  *        a wake-up signal to the power management control of EC

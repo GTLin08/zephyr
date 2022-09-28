@@ -17,18 +17,6 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(wuc_ite_it8xxx2, CONFIG_INTC_LOG_LEVEL);
 
-/* Driver config */
-struct it8xxx2_wuc_cfg {
-	/* WUC wakeup edge mode register */
-	uint8_t *reg_wuemr;
-	/* WUC wakeup edge sense register */
-	uint8_t *reg_wuesr;
-	/* WUC wakeup enable register */
-	uint8_t *reg_wuenr;
-	/* WUC wakeup both edge mode register */
-	uint8_t *reg_wubemr;
-};
-
 void it8xxx2_wuc_enable(const struct device *dev, uint8_t mask)
 {
 	const struct it8xxx2_wuc_cfg *config = dev->config;
