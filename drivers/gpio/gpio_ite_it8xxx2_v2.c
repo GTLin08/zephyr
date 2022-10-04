@@ -287,6 +287,10 @@ static void gpio_ite_isr(const void *arg)
 			volatile uint8_t *reg_wuesr = wuc_config->reg_wuesr;
 			uint8_t wuc_mask = gpio_config->wui_maps[pin].mask;
 
+			printk("isr=====pin=%d\n",pin);
+			printk("isr=====reg_wuesr=%p\n",reg_wuesr);
+			printk("isr=====wuc_mask=%d\n",wuc_mask);
+
 			/* Clear the WUC status register. */
 			*reg_wuesr = wuc_mask;
 			gpio_fire_callbacks(&data->callbacks, dev, BIT(pin));
@@ -305,6 +309,9 @@ static int gpio_ite_pin_interrupt_configure(const struct device *dev,
 	const struct device *wucs = gpio_config->wui_maps[pin].wucs;
 	const struct it8xxx2_wuc_cfg *wuc_config = wucs->config;
 	uint8_t gpio_irq = gpio_config->gpio_irq[pin];
+
+	printk("===============pin=%d\n",pin);
+	printk("gpio_irq=%d\n",gpio_irq);
 
 	if (mode == GPIO_INT_MODE_DISABLED) {
 		/* Disable GPIO interrupt */
@@ -325,6 +332,9 @@ static int gpio_ite_pin_interrupt_configure(const struct device *dev,
 		volatile uint8_t *reg_wuesr = wuc_config->reg_wuesr;
 		volatile uint8_t *reg_wubemr = wuc_config->reg_wubemr;
 		uint8_t wuc_mask = gpio_config->wui_maps[pin].mask;
+
+		printk("reg_wuemr=%p\n",wuc_config->reg_wuemr);
+		printk("wuc_mask=%d\n",wuc_mask);
 
 		/* Set both edges interrupt. */
 		if ((trig & GPIO_INT_TRIG_BOTH) == GPIO_INT_TRIG_BOTH) {
@@ -368,6 +378,14 @@ static const struct gpio_driver_api gpio_ite_driver_api = {
 
 static int gpio_ite_init(const struct device *dev)
 {
+	const struct gpio_ite_cfg *gpio_config = dev->config;
+	uint8_t gpio_irq = gpio_config->gpio_irq[0];
+
+	volatile uint8_t *reg_1p8v = (uint8_t *)gpio_config->reg_p18sc;
+
+	printk("gpio_irq0=%d\n",gpio_irq);
+	printk("reg_1p8v=%p\n",reg_1p8v);
+
 	return 0;
 }
 
@@ -395,7 +413,7 @@ DEVICE_DT_INST_DEFINE(inst,                                        \
 		&gpio_ite_data_##inst,                             \
 		&gpio_ite_cfg_##inst,                              \
 		PRE_KERNEL_1,                                      \
-		CONFIG_GPIO_INIT_PRIORITY,                         \
+		65,                         \
 		&gpio_ite_driver_api);
 
 DT_INST_FOREACH_STATUS_OKAY(GPIO_ITE_DEV_CFG_DATA)
