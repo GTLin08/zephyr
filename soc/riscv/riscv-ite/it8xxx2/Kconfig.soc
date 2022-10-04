@@ -32,6 +32,9 @@ config SOC_IT81302_BX
 config SOC_IT81202_BX
 	bool "IT81202 BX version"
 
+config SOC_IT82202
+	bool "IT82202 version"
+
 endchoice
 
 config SOC_IT8XXX2_PLL_FLASH_48M
