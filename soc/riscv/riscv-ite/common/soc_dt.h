@@ -63,4 +63,28 @@
 		inst)							\
 	}
 
+
+/**
+ * @brief Macro function to construct it8xxx2 GPIO IRQ in LISTIFY extension.
+ *
+ * @param idx index in LISTIFY extension.
+ * @param inst instance number for compatible defined in DT_DRV_COMPAT.
+ * @return macro function to construct it8xxx2 GPIO IRQ.
+ */
+#define IT8XXX2_DT_GPIO_IRQ_FUNC(idx, inst)				\
+	DT_INST_IRQ_BY_IDX(inst, idx, irq)
+
+/**
+ * @brief Macro function to construct a list of it8xxx2 GPIO IRQ item
+ * with compatible defined in DT_DRV_COMPAT by LISTIFY func.
+ *
+ * @param inst instance number for compatible defined in DT_DRV_COMPAT.
+ * @return an array of GPIO IRQ item.
+ */
+#define IT8XXX2_DT_GPIO_IRQ_LIST(inst) {			        \
+	LISTIFY(8,			                                \
+		IT8XXX2_DT_GPIO_IRQ_FUNC, (,),                          \
+		inst)                                                   \
+	}
+
 #endif /* _ITE_IT8XXX2_SOC_DT_H_ */
