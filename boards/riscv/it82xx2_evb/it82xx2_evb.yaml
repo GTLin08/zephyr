@@ -1,0 +1,18 @@
+identifier: it82xx2_evb
+name: it82xx2_evb
+type: mcu
+arch: riscv32
+toolchain:
+  - zephyr
+ram: 128
+testing:
+  ignore_tags:
+    - net
+    - bluetooth
+supported:
+  - gpio
+  - adc
+  - i2c
+  - kscan
+  - pwm
+  - watchdog
