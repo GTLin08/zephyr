@@ -1,0 +1,36 @@
+/*
+ * Copyright (c) 2023 ITE Corporation.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+
+	button {
+		compatible = "gpio-keys";
+		sw0: button_0 {
+			gpios = <&gpioa 0 GPIO_ACTIVE_LOW>;
+			label = "User SW0";
+		};
+		sw1: button_1 {
+			gpios = <&gpioa 1 GPIO_ACTIVE_LOW>;
+			label = "User SW1";
+		};
+	};
+	leds {
+		compatible = "gpio-leds";
+		led0: led_0 {
+			gpios = <&gpioc 5 GPIO_ACTIVE_HIGH>;
+			label = "Green LED";
+		};
+		led1: led_1 {
+			gpios = <&gpioc 6 GPIO_ACTIVE_HIGH>;
+			label = "RED LED";
+		};
+		led2: led_2 {
+			gpios = <&gpioc 7 GPIO_ACTIVE_HIGH>;
+			label = "Y LED";
+		};
+	};
+};
+
