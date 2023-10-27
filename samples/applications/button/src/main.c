@@ -14,7 +14,6 @@
 
 #define SLEEP_TIME_MS	1
 
-
 static const struct gpio_dt_spec button1 = GPIO_DT_SPEC_GET(DT_NODELABEL(sw0), gpios);
 static struct gpio_callback button1_cb_data;
 static const struct gpio_dt_spec button2 = GPIO_DT_SPEC_GET(DT_NODELABEL(sw1), gpios);
@@ -23,9 +22,6 @@ static struct gpio_callback button2_cb_data;
 static struct gpio_dt_spec led0 = GPIO_DT_SPEC_GET(DT_NODELABEL(led0), gpios);
 static struct gpio_dt_spec led1 = GPIO_DT_SPEC_GET(DT_NODELABEL(led1), gpios);
 static struct gpio_dt_spec led2 = GPIO_DT_SPEC_GET(DT_NODELABEL(led2), gpios);
-
-#define thread0_prio  2
-static struct k_thread tdata0;
 
 #define thread1_prio  1
 static struct k_thread tdata1;
@@ -37,26 +33,12 @@ struct k_sem sem_thread1;
 struct k_sem sem_thread2;
 
 #define STACK_SIZE  512
-K_THREAD_STACK_DEFINE(thread0_stack, STACK_SIZE);
 K_THREAD_STACK_DEFINE(thread1_stack, STACK_SIZE);
 K_THREAD_STACK_DEFINE(thread2_stack, STACK_SIZE);
 
-
-static void thread0_entry(void *p1, void *p2, void *p3)
-{
-	ARG_UNUSED(p1);
-	ARG_UNUSED(p2);
-	ARG_UNUSED(p3);
-	for (int i=0;i<10;i++) {
-		printk("Thread 0: Flashing at 0.5s intervals.\n");
-		gpio_pin_toggle_dt(&led0);
-
-		k_busy_wait(500000);
-	}
-}
-
 void thread1_entry(void *p1, void *p2, void *p3) {
 
+	printk("thread1_entry\n");
 	while (1) {
 		/* Suspend thread1 */
 		k_sem_take(&sem_thread1, K_FOREVER);
@@ -69,6 +51,7 @@ void thread1_entry(void *p1, void *p2, void *p3) {
 
 void thread2_entry(void *p1, void *p2, void *p3) {
 
+	printk("thread2_entry\n");
 	while (1) {
 		/* Suspend thread2 */
 		k_sem_take(&sem_thread2, K_FOREVER);
@@ -236,10 +219,6 @@ int main(void)
 	k_sem_init(&sem_thread1, 0, 1);
 	k_sem_init(&sem_thread2, 0, 1);
 
-	k_thread_create(&tdata0, thread0_stack, STACK_SIZE,
-				      thread0_entry, NULL, NULL, NULL,
-				      thread0_prio, 0, K_NO_WAIT);
-
 	k_thread_create(&tdata1, thread1_stack, STACK_SIZE,
 				      thread1_entry, NULL, NULL, NULL,
 				      thread1_prio, 0, K_NO_WAIT);
@@ -247,6 +226,17 @@ int main(void)
 	k_thread_create(&tdata2, thread2_stack, STACK_SIZE,
 				      thread2_entry, NULL, NULL, NULL,
 				      thread2_prio, 0, K_NO_WAIT);
+
+	k_thread_priority_set(k_current_get(), K_PRIO_PREEMPT(2));
+	while (1) {
+		for (int i=0;i<10;i++) {
+			printk("Thread 0: Flashing at 0.5s intervals.\n");
+			gpio_pin_toggle_dt(&led0);
+
+			k_busy_wait(500000);
+		}
+		k_sleep(K_FOREVER);
+	}
 
 	return 0;
 }
