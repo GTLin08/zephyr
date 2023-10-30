@@ -19,23 +19,18 @@ static struct gpio_callback button1_cb_data;
 static const struct gpio_dt_spec button2 = GPIO_DT_SPEC_GET(DT_NODELABEL(sw1), gpios);
 static struct gpio_callback button2_cb_data;
 
-static struct gpio_dt_spec led0 = GPIO_DT_SPEC_GET(DT_NODELABEL(led0), gpios);
 static struct gpio_dt_spec led1 = GPIO_DT_SPEC_GET(DT_NODELABEL(led1), gpios);
 static struct gpio_dt_spec led2 = GPIO_DT_SPEC_GET(DT_NODELABEL(led2), gpios);
 
-#define thread1_prio  1
 static struct k_thread tdata1;
-
-#define thread2_prio  3
-static struct k_thread tdata2;
 
 struct k_sem sem_thread1;
 struct k_sem sem_thread2;
 
 #define STACK_SIZE  512
 K_THREAD_STACK_DEFINE(thread1_stack, STACK_SIZE);
-K_THREAD_STACK_DEFINE(thread2_stack, STACK_SIZE);
 
+#define thread1_prio  1
 void thread1_entry(void *p1, void *p2, void *p3) {
 
 	printk("thread1_entry\n");
@@ -43,22 +38,12 @@ void thread1_entry(void *p1, void *p2, void *p3) {
 		/* Suspend thread1 */
 		k_sem_take(&sem_thread1, K_FOREVER);
 
-		printk("Thread 1: Button a0 makes the light flash.\n");
-		gpio_pin_toggle_dt(&led1);
-		printk("Thread 1: end!\n");
-	}
-}
+		for (int i=0;i<10;i++) {
+			printk("Thread 1: Flashing at 0.5s intervals.\n");
+			gpio_pin_toggle_dt(&led1);
 
-void thread2_entry(void *p1, void *p2, void *p3) {
-
-	printk("thread2_entry\n");
-	while (1) {
-		/* Suspend thread2 */
-		k_sem_take(&sem_thread2, K_FOREVER);
-
-		printk("Thread 2: Button a1 makes the light flash.\n");
-		gpio_pin_toggle_dt(&led2);
-		printk("Thread 2: end!\n");
+			k_busy_wait(500000);
+		}
 	}
 }
 
@@ -136,29 +121,6 @@ void gpio_button2_init(void) {
 	printk("Set up button at %s pin %d\n", button2.port->name, button2.pin);
 }
 
-void gpio_led0_init(void) {
-	int ret;
-
-	if (led0.port && !device_is_ready(led0.port)) {
-		printk("Error: LED device %s is not ready; ignoring it\n", led1.port->name);
-		led0.port = NULL;
-
-		return;
-	}
-	if (led0.port) {
-		ret = gpio_pin_configure_dt(&led0, GPIO_OUTPUT);
-		if (ret != 0) {
-			printk("Error %d: failed to configure LED device %s pin %d\n",
-			       ret, led0.port->name, led0.pin);
-			led0.port = NULL;
-
-			return;
-		} else {
-			printk("Set up LED at %s pin %d\n", led0.port->name, led0.pin);
-		}
-	}
-}
-
 void gpio_led1_init(void) {
 	int ret;
 
@@ -212,30 +174,24 @@ int main(void)
 	gpio_button2_init();
 
 	/* LED initialization */
-	gpio_led0_init();
 	gpio_led1_init();
 	gpio_led2_init();
 
 	k_sem_init(&sem_thread1, 0, 1);
 	k_sem_init(&sem_thread2, 0, 1);
 
+	/* Thread1 create */
 	k_thread_create(&tdata1, thread1_stack, STACK_SIZE,
 				      thread1_entry, NULL, NULL, NULL,
 				      thread1_prio, 0, K_NO_WAIT);
 
-	k_thread_create(&tdata2, thread2_stack, STACK_SIZE,
-				      thread2_entry, NULL, NULL, NULL,
-				      thread2_prio, 0, K_NO_WAIT);
-
-	k_thread_priority_set(k_current_get(), K_PRIO_PREEMPT(2));
 	while (1) {
-		for (int i=0;i<10;i++) {
-			printk("Thread 0: Flashing at 0.5s intervals.\n");
-			gpio_pin_toggle_dt(&led0);
+		/* Suspend thread2 */
+		k_sem_take(&sem_thread2, K_FOREVER);
 
-			k_busy_wait(500000);
-		}
-		k_sleep(K_FOREVER);
+		printk("Main thread: Button2 makes the light toggle.\n");
+		gpio_pin_toggle_dt(&led2);
+		printk("Main thread: end!\n");
 	}
 
 	return 0;

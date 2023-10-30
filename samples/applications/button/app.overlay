@@ -19,17 +19,13 @@
 	};
 	leds {
 		compatible = "gpio-leds";
-		led0: led_0 {
-			gpios = <&gpioc 5 GPIO_ACTIVE_HIGH>;
-			label = "Green LED";
-		};
 		led1: led_1 {
-			gpios = <&gpioc 6 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpioc 5 GPIO_ACTIVE_HIGH>;
 			label = "RED LED";
 		};
 		led2: led_2 {
-			gpios = <&gpioc 7 GPIO_ACTIVE_HIGH>;
-			label = "Y LED";
+			gpios = <&gpioc 6 GPIO_ACTIVE_HIGH>;
+			label = "Yellow LED";
 		};
 	};
 };
