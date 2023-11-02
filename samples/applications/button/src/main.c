@@ -23,14 +23,18 @@ static struct gpio_dt_spec led1 = GPIO_DT_SPEC_GET(DT_NODELABEL(led1), gpios);
 static struct gpio_dt_spec led2 = GPIO_DT_SPEC_GET(DT_NODELABEL(led2), gpios);
 
 static struct k_thread tdata1;
+static struct k_thread tdata2;
 
 struct k_sem sem_thread1;
 struct k_sem sem_thread2;
 
 #define STACK_SIZE  512
 K_THREAD_STACK_DEFINE(thread1_stack, STACK_SIZE);
+K_THREAD_STACK_DEFINE(thread2_stack, STACK_SIZE);
 
-#define thread1_prio  1
+#define thread1_prio  2
+#define thread2_prio  1
+
 void thread1_entry(void *p1, void *p2, void *p3) {
 
 	printk("thread1_entry\n");
@@ -44,6 +48,19 @@ void thread1_entry(void *p1, void *p2, void *p3) {
 
 			k_busy_wait(500000);
 		}
+	}
+}
+
+void thread2_entry(void *p1, void *p2, void *p3) {
+
+	printk("thread2_entry\n");
+	while (1) {
+		/* Suspend thread2 */
+		k_sem_take(&sem_thread2, K_FOREVER);
+
+		printk("Main thread: Button2 makes the light toggle.\n");
+		gpio_pin_toggle_dt(&led2);
+		printk("Main thread: end!\n");
 	}
 }
 
@@ -185,14 +202,10 @@ int main(void)
 				      thread1_entry, NULL, NULL, NULL,
 				      thread1_prio, 0, K_NO_WAIT);
 
-	while (1) {
-		/* Suspend thread2 */
-		k_sem_take(&sem_thread2, K_FOREVER);
-
-		printk("Main thread: Button2 makes the light toggle.\n");
-		gpio_pin_toggle_dt(&led2);
-		printk("Main thread: end!\n");
-	}
+	/* Thread2 create */
+	k_thread_create(&tdata2, thread2_stack, STACK_SIZE,
+				      thread2_entry, NULL, NULL, NULL,
+				      thread2_prio, 0, K_NO_WAIT);
 
 	return 0;
 }
