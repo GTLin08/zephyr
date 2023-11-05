@@ -128,6 +128,55 @@ static int pinctrl_it8xxx2_set(const pinctrl_soc_pin_t *pins)
 	return 0;
 }
 
+static int pinctrl_i2c_swap_set(const pinctrl_soc_pin_t *pins)
+{
+	struct gctrl_it8xxx2_regs *const gctrl_regs = GCTRL_IT8XXX2_REGS_BASE;
+	/* Channel switch select starting from 0 */
+	uint8_t ch_sel = pins->swap - 1;
+
+	/* Channel switch selection of I2C pin */
+	if (pins->pinctrls == DEVICE_DT_GET(DT_NODELABEL(pinctrlb))) {
+		uint8_t smb1_sel = IT8XXX2_SMB_SMB01CHS & GENMASK(7, 4);
+
+		IT8XXX2_SMB_SMB01CHS = smb1_sel | ch_sel;
+	} else if (pins->pinctrls == DEVICE_DT_GET(DT_NODELABEL(pinctrlc))) {
+		uint8_t smb0_sel = IT8XXX2_SMB_SMB01CHS & GENMASK(3, 0);
+
+		IT8XXX2_SMB_SMB01CHS = (ch_sel << 4) | smb0_sel;
+	} else if (pins->pinctrls == DEVICE_DT_GET(DT_NODELABEL(pinctrlf))) {
+#ifdef CONFIG_SOC_IT8XXX2_REG_SET_V1
+		/* I2C3 swaps from GPIOH to GPIOF group */
+		if (gctrl_regs->GCTRL_PMER3 & IT8XXX2_GCTRL_SMB3PSEL) {
+			uint8_t smb2_sel = IT8XXX2_SMB_SMB23CHS & GENMASK(3, 0);
+
+			IT8XXX2_SMB_SMB23CHS = (ch_sel << 4) | smb2_sel;
+		} else
+#endif
+		{
+			uint8_t smb3_sel = IT8XXX2_SMB_SMB23CHS & GENMASK(7, 4);
+
+			IT8XXX2_SMB_SMB23CHS = smb3_sel | ch_sel;
+		}
+	} else if (pins->pinctrls == DEVICE_DT_GET(DT_NODELABEL(pinctrlh))) {
+		uint8_t smb2_sel = IT8XXX2_SMB_SMB23CHS & GENMASK(3, 0);
+
+		IT8XXX2_SMB_SMB23CHS = (ch_sel << 4) | smb2_sel;
+	} else if (pins->pinctrls == DEVICE_DT_GET(DT_NODELABEL(pinctrle))) {
+		uint8_t smb5_sel = IT8XXX2_SMB_SMB45CHS & GENMASK(7, 4);
+
+		IT8XXX2_SMB_SMB45CHS = smb5_sel | ch_sel;
+	} else if (pins->pinctrls == DEVICE_DT_GET(DT_NODELABEL(pinctrla))) {
+		uint8_t smb4_sel = IT8XXX2_SMB_SMB45CHS & GENMASK(3, 0);
+
+		IT8XXX2_SMB_SMB45CHS = (ch_sel << 4) | smb4_sel;
+	} else {
+		LOG_ERR("The swap selection is not supporteds");
+		return -EINVAL;
+	}
+
+	return 0;
+}
+
 static int pinctrl_gpio_it8xxx2_configure_pins(const pinctrl_soc_pin_t *pins)
 {
 	const struct pinctrl_it8xxx2_config *pinctrl_config = pins->pinctrls->config;
@@ -163,6 +212,14 @@ static int pinctrl_gpio_it8xxx2_configure_pins(const pinctrl_soc_pin_t *pins)
 	/* Ensure that func3-ext setting is in default state. */
 	if (reg_func3_ext != NULL) {
 		*reg_func3_ext &= ~gpio->func3_ext_mask[pin];
+	}
+
+	/* I2C channel selection */
+	if (pins->swap) {
+		if (pinctrl_i2c_swap_set(pins)) {
+			LOG_ERR("Pin swapping is invalid.");
+			return -EINVAL;
+		}
 	}
 
 	switch (pins->alt_func) {

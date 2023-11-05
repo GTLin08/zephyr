@@ -28,6 +28,9 @@ struct pinctrl_soc_pin {
 	uint8_t pin;
 	/* Alternate function */
 	uint8_t alt_func;
+	/* Channel switch selection */
+	uint8_t swap;
+
 };
 
 typedef struct pinctrl_soc_pin pinctrl_soc_pin_t;
@@ -149,6 +152,14 @@ typedef struct pinctrl_soc_pin pinctrl_soc_pin_t;
 #define Z_PINCTRL_IT8XXX2_ALT_INIT(node_id)          \
 	DT_PHA(node_id, pinmuxs, alt_func)
 
+	/**
+	 * @brief Utility macro to initialize swap of pinmuxs field in #pinctrl_pin_t.
+	 *
+	 * @param node_id Node identifier.
+	 */
+#define Z_PINCTRL_IT8XXX2_SWAP_INIT(node_id)          \
+	DT_PHA(node_id, pinmuxs, swap)
+
 /**
  * @brief Utility macro to initialize each pin.
  *
@@ -164,6 +175,8 @@ typedef struct pinctrl_soc_pin pinctrl_soc_pin_t;
 	  .pin = Z_PINCTRL_IT8XXX2_PIN_INIT(                  \
 		DT_PROP_BY_IDX(node_id, prop, idx)),          \
 	  .alt_func = Z_PINCTRL_IT8XXX2_ALT_INIT(             \
+		DT_PROP_BY_IDX(node_id, prop, idx)),          \
+	  .swap = Z_PINCTRL_IT8XXX2_SWAP_INIT(                \
 		DT_PROP_BY_IDX(node_id, prop, idx)), },
 
 /**

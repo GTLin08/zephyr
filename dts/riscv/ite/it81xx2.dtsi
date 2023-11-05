@@ -74,7 +74,7 @@
 					 0xf016e9 0xf016e9 0xf016e9 0xf016e9>;
 			volt-sel-mask = <0        0        0        0
 					 0x1      0x02     0x20     0x40    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -93,7 +93,7 @@
 					 0xf016e7 0xf016e4 0xf016e4 0xf016e9>;
 			volt-sel-mask = <0        0        0        0x02
 					 0x01     0x80     0x40     0x10    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -112,7 +112,7 @@
 					 0xf016e9 NO_FUNC  0xf016e9 0xf016e4>;
 			volt-sel-mask = <0x80     0x20     0x10     0
 					 0x04     0        0x08     0x08    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -131,7 +131,7 @@
 					 0xf016e5 0xf016e7 0xf016e7 0xf016e7>;
 			volt-sel-mask = <0x04     0x02     0x01     0x80
 					 0x40     0x10     0x20     0x40    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -150,7 +150,7 @@
 					 0xf016e7 0xf016e7 0xf016e5 0xf016e5>;
 			volt-sel-mask = <0x20     0x40     0x80     0
 					 0x04     0x08     0x10     0x08    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -169,7 +169,7 @@
 					 0xf016e5 0xf016e6 0xf016e6 0xf016e6>;
 			volt-sel-mask = <0x10     0x20     0x04     0x02
 					 0x01     0x80     0x40     0x20    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -188,7 +188,7 @@
 					 NO_FUNC  NO_FUNC  0xf016e6 NO_FUNC>;
 			volt-sel-mask = <0x04     0x10    0x08     0
 					 0        0       0x08     0       >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -211,7 +211,7 @@
 					 NO_FUNC  0xf016d3 0xf016d4 NO_FUNC>;
 			volt-sel-mask = <0x04     0x02     0x01     0
 					 0        0x80     0x01     0      >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -230,7 +230,7 @@
 					 0xf016e8 0xf016d3 0xf016d3 0xf016d3>;
 			volt-sel-mask = <0x08     0x10     0x20     0x40
 					 0x80     0x10     0x20     0x40    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -249,7 +249,7 @@
 					 0xf016d3 0xf016d3 0xf016d3 0xf016d7>;
 			volt-sel-mask = <0x01     0x02     0x04     0x08
 					 0x01     0x02     0x04     0x04    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -268,7 +268,7 @@
 					 0xf016d2 0xf016d2 0xf016d2 0xf016d2>;
 			volt-sel-mask = <0x01     0x02     0x04     0x08
 					 0x10     0x20     0x40     0x80    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -287,7 +287,7 @@
 					 0xf016d1 0xf016d1 0xf016d1 0xf016d1>;
 			volt-sel-mask = <0x01     0x02     0x04     0x08
 					 0x10     0x20     0x40     0x80    >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -306,7 +306,7 @@
 					 0xf016ed 0xf016ed 0xf016ed NO_FUNC >;
 			volt-sel-mask = <0x10     0x10     0x10     0x10
 					 0x10     0x10     0x10     0       >;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 			gpio-group;
 		};
 
@@ -316,7 +316,7 @@
 			       0x00f01d05 1>; /* KSICTRL */
 			pp-od-mask = <NO_FUNC>;
 			pullup-mask = <BIT(2)>;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 		};
 
 		pinctrlksoh: pinctrl@f01d0a {
@@ -325,7 +325,7 @@
 			       0x00f01d02 1>; /* KSOCTRL */
 			pp-od-mask = <BIT(0)>;
 			pullup-mask = <BIT(2)>;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 		};
 
 		pinctrlksol: pinctrl@f01d0d {
@@ -334,7 +334,7 @@
 			       0x00f01d02 1>; /* KSOCTRL */
 			pp-od-mask = <BIT(0)>;
 			pullup-mask = <BIT(2)>;
-			#pinmux-cells = <2>;
+			#pinmux-cells = <3>;
 		};
 
 		i2c0: i2c@f01c40 {

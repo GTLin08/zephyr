@@ -60,3 +60,4 @@ properties:
 pinmux-cells:
   - pin
   - alt_func
+  - swap
