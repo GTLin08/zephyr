@@ -68,7 +68,7 @@ typedef int (*emul_init_t)(const struct emul *emul, const struct device *parent)
  */
 struct no_bus_emul {
 	void *api;
-	uint16_t addr;
+	int addr;
 };
 
 /** An emulator instance - represents the *target* emulated device/peripheral that is
