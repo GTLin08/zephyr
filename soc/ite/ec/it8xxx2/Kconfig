@@ -1,11 +1,11 @@
 # Copyright (c) 2020 ITE Corporation. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-config SOC_SERIES_ITE_IT8XXX2
+config SOC_SERIES_IT8XXX2
 	select CPU_HAS_FPU if "$(ZEPHYR_TOOLCHAIN_VARIANT)" != "zephyr" || RISCV_ISA_EXT_M
 	select HAS_PM
 
-if SOC_SERIES_ITE_IT8XXX2
+if SOC_SERIES_IT8XXX2
 
 config SOC_IT8XXX2
 	select RISCV
@@ -181,4 +181,4 @@ config ILM_MAX_SIZE
 	default 60 if SOC_IT81202_CX || SOC_IT81302_CX
 	default SRAM_SIZE
 
-endif # SOC_SERIES_ITE_IT8XXX2
+endif # SOC_SERIES_IT8XXX2
