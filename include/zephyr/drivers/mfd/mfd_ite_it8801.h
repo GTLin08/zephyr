@@ -94,6 +94,8 @@ static const struct it8801_vendor_id_t it8801_id_verify[] = {
 #define IT8801_DT_INST_MFDCTRL(inst, idx)                                      \
 	DT_INST_PHANDLE_BY_IDX(inst, mfdctrl, idx)
 
+#define MFDCTRL_ALT_COUNT IT8801_DT_INST_MFCCTRL_LEN(0)
+
 #define IT8801_DT_INST_MFCCTRL_LEN(inst)                                       \
 	DT_INST_PROP_LEN(inst, mfdctrl)
 
