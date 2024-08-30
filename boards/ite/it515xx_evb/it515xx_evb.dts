@@ -153,3 +153,7 @@
 &sha256 {
 	status = "okay";
 };
+
+&espi0 {
+	status = "okay";
+};

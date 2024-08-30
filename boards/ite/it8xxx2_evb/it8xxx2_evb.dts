@@ -185,6 +185,9 @@
 &sha0 {
 	status = "okay";
 };
+&espi0 {
+	status = "okay";
+};
 &flash0 {
 	partitions {
 		compatible = "fixed-partitions";

@@ -230,3 +230,7 @@ zephyr_udc0: &usb0 {
 		};
 	};
 };
+
+&espi0 {
+	status = "okay";
+};
