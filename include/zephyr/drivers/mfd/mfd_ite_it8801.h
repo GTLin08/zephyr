@@ -89,9 +89,44 @@ static const struct it8801_vendor_id_t it8801_id_verify[] = {
 
 
 /*
+ * For IT8801 MFD alternate function controller
+ */
+#define IT8801_DT_INST_MFDCTRL(inst, idx)                                      \
+	DT_INST_PHANDLE_BY_IDX(inst, mfdctrl, idx)
+
+#define IT8801_DT_INST_MFCCTRL_LEN(inst)                                       \
+	DT_INST_PROP_LEN(inst, mfdctrl)
+
+#define IT8801_DEV_MFD(idx, inst)                                              \
+	DEVICE_DT_GET(DT_PHANDLE(IT8801_DT_INST_MFDCTRL(inst, idx), altctrls))
+#define IT8801_DEV_MFD_PIN(idx, inst)                                          \
+	DT_PHA(IT8801_DT_INST_MFDCTRL(inst, idx), altctrls, pin)
+#define IT8801_DEV_MFD_FUNC(idx, inst)                                         \
+	DT_PHA(IT8801_DT_INST_MFDCTRL(inst, idx), altctrls, alt_func)
+
+#define IT8801_DT_MFD_ITEMS_FUNC(idx, inst)                                    \
+	{                                                                      \
+		.gpiocr = IT8801_DEV_MFD(idx, inst),                           \
+		.pin = IT8801_DEV_MFD_PIN(idx, inst),                          \
+		.alt_func = IT8801_DEV_MFD_FUNC(idx, inst),                    \
+	}
+
+#define IT8801_DT_MFD_ITEMS_LIST(inst) {                                       \
+	LISTIFY(IT8801_DT_INST_MFCCTRL_LEN(inst),                              \
+		IT8801_DT_MFD_ITEMS_FUNC, (,),                                 \
+		inst)                                                          \
+	}
+
+
+/*
  * Get the I2C device for MFD parent
  */
 const struct i2c_dt_spec *mfd_it8801_get_i2c_dt_spec(const struct device *dev);
+
+/*
+ * Configure alternate function pin
+ */
+int mfd_it8801_configure_pins(const struct device *dev, uint8_t pin, uint8_t func);
 
 #ifdef __cplusplus
 }
