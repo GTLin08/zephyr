@@ -20,7 +20,7 @@
 		led0 = &led0;
 		kscan0 = &kscan_input;
 		watchdog0 = &twd0;
-		pwm-0 = &pwm0;
+		pwm-0 = &ioex_it8801_pwm;
 	};
 
 	chosen {
@@ -119,6 +119,17 @@
 			kscan_input: kscan-input {
 				compatible = "zephyr,kscan-input";
 			};
+		};
+
+		ioex_it8801_pwm: it8801_pwm@90  {
+			compatible = "ite,it8801-pwm";
+			mfdctrl = <&pwm7_gp20_default>;
+			reg = <0x90 1   /* PWMMCR */
+			       0x94 1   /* PWMDCR */
+			       0x96 1   /* PWMPRSL */
+			       0x97 1>; /* PWMPRSM */
+			channel = <7>;
+			#pwm-cells = <3>;
 		};
 	};
 };

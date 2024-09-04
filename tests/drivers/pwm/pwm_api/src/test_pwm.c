@@ -100,7 +100,7 @@
  */
 #define DEFAULT_PWM_PORT 1
 #else
-#define DEFAULT_PWM_PORT 0
+#define DEFAULT_PWM_PORT 7
 #endif
 
 #define UNIT_CYCLES	0
@@ -125,13 +125,13 @@ static int test_task(uint32_t port, uint32_t period, uint32_t pulse, uint8_t uni
 
 	if (unit == UNIT_CYCLES) {
 		/* Verify pwm_set_cycles() */
-		if (pwm_set_cycles(pwm_dev, port, period, pulse, 0)) {
+		if (pwm_set_cycles(pwm_dev, port, period, pulse, BIT(8))) {
 			TC_PRINT("Fail to set the period and pulse width\n");
 			return TC_FAIL;
 		}
 	} else { /* unit == UNIT_NSECS */
 		/* Verify pwm_set() */
-		if (pwm_set(pwm_dev, port, period, pulse, 0)) {
+		if (pwm_set(pwm_dev, port, period, pulse,  BIT(8))) {
 			TC_PRINT("Fail to set the period and pulse width\n");
 			return TC_FAIL;
 		}
