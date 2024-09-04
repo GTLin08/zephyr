@@ -3,4 +3,4 @@ board:
   full_name: IT82XX2 series
   vendor: ite
   socs:
-    - name: it82202ax
+    - name: it82202bw

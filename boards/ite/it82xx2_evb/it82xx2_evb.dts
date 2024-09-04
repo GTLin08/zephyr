@@ -8,6 +8,7 @@
 #include <zephyr/dt-bindings/gpio/gpio.h>
 #include <ite/it82xx2.dtsi>
 #include <ite/it8xxx2-pinctrl-map.dtsi>
+#include <ite/it8801-mfd-map.dtsi>
 
 / {
 	model = "IT82XX2 EV-Board";
@@ -95,6 +96,31 @@
 	pinctrl-0 = <&i2c4_clk_gpe0_default
 		     &i2c4_data_gpe7_default>;
 	pinctrl-names = "default";
+
+	it8801_mfd: it8801@38 {
+		compatible = "ite,it8801-mfd";
+		reg = <0x38>;
+		irq-gpios = <&gpioa 1 0>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		ioex_it8801_kbd: it8801_kbd@40  {
+			compatible = "ite,it8801-kbd";
+			reg = <0x40 1
+			       0x41 1
+			       0x42 1
+			       0x43 1>;
+			mfdctrl = <&kso18_gp01_default &kso20_gp23_default>;
+			kso-mapping = <0 1 20 3 4 5 6
+				       17 18 16 15 11 12>;
+			row-size = <8>;
+			col-size = <13>;
+
+			kscan_input: kscan-input {
+				compatible = "zephyr,kscan-input";
+			};
+		};
+	};
 };
 
 &i2c5 {
@@ -197,9 +223,6 @@
 	row-size = <8>;
 	col-size = <16>;
 
-	kscan_input: kscan-input {
-		compatible = "zephyr,kscan-input";
-	};
 };
 
 &peci0 {
