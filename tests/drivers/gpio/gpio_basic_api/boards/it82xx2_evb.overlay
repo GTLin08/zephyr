@@ -7,7 +7,7 @@
 / {
 	resources {
 		compatible = "test-gpio-basic-api";
-		out-gpios = <&gpioa 0 0>; /* GPIOA.0 */
-		in-gpios = <&gpioa 1 0>;  /* GPIOA.1 */
+		out-gpios = <&ioex_it8801_port1 0 0>; /* GPIOA.0 */
+		in-gpios = <&ioex_it8801_port1 1 0>;  /* GPIOA.1 */
 	};
 };
