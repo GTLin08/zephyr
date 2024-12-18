@@ -7,7 +7,17 @@
 / {
 	resources {
 		compatible = "test-gpio-basic-api";
-		out-gpios = <&gpioa 0 0>; /* GPIOA.0 */
-		in-gpios = <&gpioa 1 0>;  /* GPIOA.1 */
+		out-gpios = <&ioex_it8801_port1 0 0>; /* GPIOA.0 */
+		in-gpios = <&ioex_it8801_port1 1 0>;  /* GPIOA.1 */
 	};
+};
+
+it8801_i2c: &i2c4 {
+	status = "okay";
+};
+
+#include <ite/it8801-common-cfg.dtsi>
+
+&it8801_mfd {
+	irq-gpios = <&gpioa 1 0>;
 };

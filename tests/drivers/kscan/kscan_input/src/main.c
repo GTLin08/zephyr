@@ -13,10 +13,10 @@
 static const struct device *kscan_dev = DEVICE_DT_GET(
 		DT_NODELABEL(kscan_input));
 static const struct device *input_dev = DEVICE_DT_GET(
-		DT_NODELABEL(fake_input_device));
+		DT_NODELABEL(ioex_it8801_kbd));
 
-DEVICE_DT_DEFINE(DT_INST(0, vnd_input_device), NULL, NULL, NULL, NULL,
-		 PRE_KERNEL_1, CONFIG_KERNEL_INIT_PRIORITY_DEVICE, NULL);
+//DEVICE_DT_DEFINE(DT_INST(0, vnd_input_device), NULL, NULL, NULL, NULL,
+//		 PRE_KERNEL_1, CONFIG_KERNEL_INIT_PRIORITY_DEVICE, NULL);
 
 static struct {
 	uint32_t row;
@@ -36,8 +36,19 @@ static void kscan_callback(const struct device *dev, uint32_t row, uint32_t col,
 	last_cb_val.pressed = pressed;
 }
 
+#include <zephyr/pm/device.h>
+#include <zephyr/pm/device_runtime.h>
+
 ZTEST(kscan_input, test_kscan_input)
 {
+	int ret;
+
+	ret = pm_device_runtime_get(input_dev);
+	if (ret < 0) {
+		printk("runtime get fail\n");
+		//return ret;
+	}
+
 	kscan_config(kscan_dev, kscan_callback);
 	kscan_enable_callback(kscan_dev);
 
