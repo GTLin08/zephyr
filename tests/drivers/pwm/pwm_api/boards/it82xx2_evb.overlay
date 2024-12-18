@@ -1,14 +1,12 @@
 /*
- * Copyright (c) 2023 ITE Corporation.
+ * Copyright (c) 2024 ITE Corporation. All Rights Reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 
 / {
-	resources {
-		compatible = "test-gpio-basic-api";
-		out-gpios = <&ioex_it8801_port1 0 0>; /* GPIOA.0 */
-		in-gpios = <&ioex_it8801_port1 1 0>;  /* GPIOA.1 */
+	aliases {
+		pwm-0 = &ioex_it8801_pwm7;
 	};
 };
 
@@ -23,3 +21,7 @@
 };
 
 #include <ite/it8801-common-cfg.dtsi>
+
+&ioex_it8801_pwm7 {
+	status = "okay";
+};
