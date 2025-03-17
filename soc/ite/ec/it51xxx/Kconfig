@@ -40,8 +40,4 @@ config SOC_IT51XXX_USE_ILM
 	  predictable than executing from Flash directly, and some code (such as code
 	  that writes to the internal Flash) must execute out of RAM.
 
-config ILM_MAX_SIZE
-	int "ILM Size in kB"
-	default 4
-
 endif # SOC_SERIES_IT51XXX

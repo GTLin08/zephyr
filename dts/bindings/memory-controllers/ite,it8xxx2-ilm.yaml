@@ -7,3 +7,8 @@ include: base.yaml
 properties:
   reg:
     required: true
+
+  ilm-size:
+    type: int
+    description: |
+      Configurable instruction local memory size.

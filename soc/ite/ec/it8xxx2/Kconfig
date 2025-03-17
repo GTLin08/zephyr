@@ -245,8 +245,4 @@ config SOC_IT8XXX2_FLASH_SIZE_BYTES
 	help
 	  Total size of writable flash.
 
-config ILM_MAX_SIZE
-	int "ILM Size in kB"
-	default SRAM_SIZE
-
 endif # SOC_SERIES_IT8XXX2

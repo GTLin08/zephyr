@@ -13,6 +13,35 @@
 			reg = <0x80100000 DT_SIZE_K(256)>;
 		};
 
+		ilm: ilm@f01040 {
+			compatible = "ite,it8xxx2-ilm";
+			reg = <0xf01040 3	/* SCAR0 */
+			       0xf01043 3
+			       0xf01046 3
+			       0xf01049 3
+			       0xf0104c 3	/* SCAR4 */
+			       0xf01081 3	/* SCAR5 */
+			       0xf01084 3
+			       0xf01087 3
+			       0xf0108a 3
+			       0xf0108d 3
+			       0xf01090 3
+			       0xf01093 3
+			       0xf01096 3	/* SCAR12 */
+			       0xf010b0 3	/* SCAR13 */
+			       0xf010b3 3
+			       0xf010b6 3
+			       0xf010b9 3
+			       0xf010bc 3
+			       0xf010bf 3
+			       0xf010c2 3
+			       0xf010c5 3
+			       0xf010c8 3
+			       0xf010cb 3
+			       0xf010ce 3>;	/* SCAR23 */
+			ilm-size = <256>;	/* DT_SIZE_K(256) */
+		};
+
 		intc: interrupt-controller@f03f00 {
 			compatible = "ite,it8xxx2-intc-v2";
 			#address-cells = <0>;

@@ -100,6 +100,7 @@
 			       0xf010c8 3
 			       0xf010cb 3
 			       0xf010ce 3>;	/* SCAR23 */
+			ilm-size = <60>;	/* DT_SIZE_K(60) */
 		};
 
 		uart1: uart@f02700 {

@@ -45,7 +45,8 @@ BUILD_ASSERT((ILM_BLOCK_SIZE & (ILM_BLOCK_SIZE - 1)) == 0, "ILM_BLOCK_SIZE must 
 #define FLASH_BASE CONFIG_FLASH_BASE_ADDRESS
 #define RAM_BASE   CONFIG_SRAM_BASE_ADDRESS
 
-#define ILM_NODE DT_NODELABEL(ilm)
+#define ILM_NODE     DT_NODELABEL(ilm)
+#define ILM_MAX_SIZE DT_PROP(ILM_NODE, ilm_size)
 
 /*
  * SCAR registers contain 20-bit addresses in three registers, with one set
@@ -61,7 +62,7 @@ struct scar_reg {
 };
 
 struct ilm_config {
-	volatile struct scar_reg *scar_regs[CONFIG_ILM_MAX_SIZE / 4];
+	volatile struct scar_reg *scar_regs[ILM_MAX_SIZE / 4];
 };
 
 bool it8xxx2_is_ilm_configured(void)
@@ -158,7 +159,7 @@ static int it8xxx2_ilm_init(const struct device *dev)
 static const struct ilm_config ilm_config = {
 	.scar_regs = {/* SCAR0 SRAM 4KB */
 		      SCAR_REG(0),
-#if (CONFIG_ILM_MAX_SIZE > 4)
+#if (ILM_MAX_SIZE > 4)
 		      SCAR_REG(1), SCAR_REG(2), SCAR_REG(3), SCAR_REG(4), SCAR_REG(5), SCAR_REG(6),
 		      SCAR_REG(7), SCAR_REG(8), SCAR_REG(9), SCAR_REG(10), SCAR_REG(11),
 		      SCAR_REG(12), SCAR_REG(13), SCAR_REG(14),
@@ -168,7 +169,7 @@ static const struct ilm_config ilm_config = {
  * maximum ILM size are 60KB, the ILM size of other variants
  * are equal to the SRAM size.
  */
-#if (CONFIG_ILM_MAX_SIZE == 256)
+#if (ILM_MAX_SIZE == 256)
 		      /* SCAR15 SRAM 4KB */
 		      SCAR_REG(15),
 		      /* SCAR16 SRAM 16KB */
@@ -193,7 +194,7 @@ static const struct ilm_config ilm_config = {
 		      SCAR_REG(23), SCAR_REG(23), SCAR_REG(23)
 #endif
 	}};
-BUILD_ASSERT(ARRAY_SIZE(ilm_config.scar_regs) * ILM_BLOCK_SIZE == KB(CONFIG_ILM_MAX_SIZE),
+BUILD_ASSERT(ARRAY_SIZE(ilm_config.scar_regs) * ILM_BLOCK_SIZE == KB(ILM_MAX_SIZE),
 	     "Wrong number of SCAR registers defined for RAM size");
 
 DEVICE_DT_DEFINE(ILM_NODE, &it8xxx2_ilm_init, NULL, NULL, &ilm_config, PRE_KERNEL_1, 0, NULL);
