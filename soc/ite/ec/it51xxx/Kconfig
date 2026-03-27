@@ -48,4 +48,16 @@ config ILM_MAX_SIZE
 	int "ILM Size in kB"
 	default 4
 
+choice
+	prompt "Select IT51XXX GPIO register version"
+	default IT51XXX_GPIO_REG_V1 if SOC_IT51526AW || SOC_IT51526BW
+	default IT51XXX_GPIO_REG_V2
+
+config IT51XXX_GPIO_REG_V1
+	bool "GPIO register version 1"
+
+config IT51XXX_GPIO_REG_V2
+	bool "GPIO register version 2"
+endchoice
+
 endif # SOC_SERIES_IT51XXX

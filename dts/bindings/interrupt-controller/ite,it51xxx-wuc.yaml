@@ -19,6 +19,8 @@ properties:
     type: boolean
     description: |
       Rising-edge or falling-edge triggered is selected.
+      This property is ignored when using wakeup controller
+      version 2 (CONFIG_ITE_IT51XXX_WUC_V2).
 
   "#wuc-cells":
     type: int

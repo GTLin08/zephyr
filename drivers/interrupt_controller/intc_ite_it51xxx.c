@@ -18,7 +18,11 @@ LOG_MODULE_REGISTER(intc_ite_it51xxx, LOG_LEVEL_DBG);
 #define INTC_GRPNIER(n)    (4 * ((n) + INTC_REG_OFFSET(n)) + 1)
 #define INTC_GRPNIELMR(n)  (4 * ((n) + INTC_REG_OFFSET(n)) + 2)
 #define INTC_GRPNIPOLR(n)  (4 * ((n) + INTC_REG_OFFSET(n)) + 3)
-#define INTC_IVECT         0x10
+
+#define INTC_IVECT                     0x10
+#define INTC_IVECT_HB                  0x13
+#define INTERRUPT_VECTOR_HB(x)         FIELD_GET(BIT(0), (x))
+#define INTERRUPT_VECTOR_16BIT(lb, hb) ((uint16_t)(lb) | ((uint16_t)(hb) << 8))
 
 #define II51XXX_INTC_GROUP_COUNT 29
 #define MAX_REGISR_IRQ_NUM       8
@@ -26,7 +30,7 @@ LOG_MODULE_REGISTER(intc_ite_it51xxx, LOG_LEVEL_DBG);
 
 static mm_reg_t intc_base = DT_REG_ADDR(DT_NODELABEL(intc));
 /* Interrupt number of INTC module */
-static uint8_t intc_irq;
+static ite_irq_t intc_irq;
 static uint8_t ier_setting[II51XXX_INTC_GROUP_COUNT];
 
 void ite_intc_save_and_disable_interrupts(void)
@@ -172,24 +176,34 @@ int ite_intc_irq_is_enable(unsigned int irq)
 	return (en & BIT(i));
 }
 
-uint8_t ite_intc_get_irq_num(void)
+ite_irq_t ite_intc_get_irq_num(void)
 {
 	return intc_irq;
 }
 
-uint8_t get_irq(void *arg)
+static ite_irq_t inline ite_get_interrupt_vector(void)
+{
+#if CONFIG_NUM_IRQS <= 255
+	return sys_read8(intc_base + INTC_IVECT);
+#else
+	return INTERRUPT_VECTOR_16BIT(sys_read8(intc_base + INTC_IVECT),
+				      INTERRUPT_VECTOR_HB(sys_read8(intc_base + INTC_IVECT_HB)));
+#endif /* CONFIG_NUM_IRQS <= 255 */
+}
+
+ite_irq_t get_irq(void *arg)
 {
 	ARG_UNUSED(arg);
 	/* wait until two equal interrupt values are read */
 	do {
 		/* Read interrupt number from interrupt vector register */
-		intc_irq = sys_read8(intc_base + INTC_IVECT);
+		intc_irq = ite_get_interrupt_vector();
 		/*
 		 * WORKAROUND: when the interrupt vector register (INTC_VECT)
 		 * isn't latched in a load operation, we read it again to make
 		 * sure the value we got is the correct value.
 		 */
-	} while (intc_irq != sys_read8(intc_base + INTC_IVECT));
+	} while (intc_irq != ite_get_interrupt_vector());
 	/* determine interrupt number */
 	intc_irq -= IVECT_OFFSET_WITH_IRQ;
 	/* clear interrupt status */

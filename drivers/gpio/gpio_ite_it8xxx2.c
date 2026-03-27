@@ -43,7 +43,7 @@ struct gpio_ite_cfg {
 	/* Index in gpio_1p8v for voltage level control register element. */
 	uint8_t index;
 	/* gpio's irq */
-	uint8_t gpio_irq[8];
+	ite_irq_t gpio_irq[8];
 };
 
 /* Structure gpio_ite_data is about callback function */
@@ -599,7 +599,7 @@ static int gpio_ite_manage_callback(const struct device *dev,
 
 static void gpio_ite_isr(const void *arg)
 {
-	uint8_t irq = ite_intc_get_irq_num();
+	ite_irq_t irq = ite_intc_get_irq_num();
 	const struct device *dev = arg;
 	struct gpio_ite_data *data = DEV_GPIO_DATA(dev);
 	uint8_t gpio_mask = gpio_irqs[irq].gpio_mask;
@@ -617,7 +617,7 @@ static int gpio_ite_pin_interrupt_configure(const struct device *dev,
 						enum gpio_int_trig trig)
 {
 	const struct gpio_ite_cfg *gpio_config = DEV_GPIO_CFG(dev);
-	uint8_t gpio_irq = gpio_config->gpio_irq[pin];
+	ite_irq_t gpio_irq = gpio_config->gpio_irq[pin];
 
 #ifdef CONFIG_GPIO_ENABLE_DISABLE_INTERRUPT
 	if (mode == GPIO_INT_MODE_DISABLED || mode == GPIO_INT_MODE_DISABLE_ONLY) {

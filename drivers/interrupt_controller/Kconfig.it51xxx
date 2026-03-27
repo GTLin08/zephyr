@@ -24,3 +24,15 @@ config ITE_IT51XXX_WUC
 	  This option enables the wakeup controller interface for IT51XXX
 	  family.
 	  This is required for KSCAN, UART, eSPI, GPIO etc., interrupt support.
+
+choice
+	prompt "Select IT51XXX wakeup controller version"
+	default ITE_IT51XXX_WUC_V1 if SOC_IT51526AW || SOC_IT51526BW
+	default ITE_IT51XXX_WUC_V2
+
+config ITE_IT51XXX_WUC_V1
+	bool "Wakeup controller version 1"
+
+config ITE_IT51XXX_WUC_V2
+	bool "Wakeup controller version 2"
+endchoice
