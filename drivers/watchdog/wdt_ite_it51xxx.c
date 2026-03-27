@@ -197,7 +197,9 @@ static int wdt_it51xxx_feed(const struct device *dev, int channel_id)
 	sys_write8(reg_val | WDT_ET1RST, base + REG_ETWCTRL);
 
 	/* restart watchdog timer */
-	sys_write8(IT51XXX_WATCHDOG_MAGIC_BYTE, base + REG_EWDKEYR);
+	uint32_t key = 0x0000005C;
+
+	sys_write32(key, base + REG_ET1CNTLLR);
 
 	/* reset pre-warning timer1 to default if time is touched */
 	if (data->wdt_warning_fired) {
