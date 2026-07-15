@@ -158,6 +158,39 @@ ZTEST(usage_api, test_all_stats_usage)
 	zassert_true(stats4.total_cycles >= stats3.total_cycles);
 	zassert_true(stats5.total_cycles > stats4.total_cycles);
 
+#if 1
+	//printk("HW_CYCLES_PER_SEC=%d, TICKS_PER_SEC=%d, cyc/tick=%d\n",
+	//	 CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC,
+	//	 CONFIG_SYS_CLOCK_TICKS_PER_SEC,
+	//	 CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC / CONFIG_SYS_CLOCK_TICKS_PER_SEC);
+	printk("stats1.peak_cycles = %llu -> tick=%lld\n",
+	       stats1.peak_cycles, k_cyc_to_ticks_near64(stats1.peak_cycles));
+
+	printk("stats2.peak_cycles = %llu -> tick=%lld\n",
+	       stats2.peak_cycles, k_cyc_to_ticks_near64(stats2.peak_cycles));
+	printk("stats3.peak_cycles = %llu -> tick=%lld\n",
+	       stats3.peak_cycles, k_cyc_to_ticks_near64(stats3.peak_cycles));
+	printk("stats4.peak_cycles = %llu -> tick=%lld\n",
+	       stats4.peak_cycles, k_cyc_to_ticks_near64(stats4.peak_cycles));
+	printk("stats5.peak_cycles = %llu -> tick=%lld\n",
+	       stats5.peak_cycles, k_cyc_to_ticks_near64(stats5.peak_cycles));
+	//printk("diff cycles = %lld, diff ticks = %lld\n",
+	///	  (int64_t)stats4.peak_cycles - (int64_t)stats3.peak_cycles,
+	//	 k_cyc_to_ticks_near64(stats4.peak_cycles) -
+	//	 k_cyc_to_ticks_near64(stats3.peak_cycles));
+	printk("stats1.current_cycles = %llu -> tick=%lld\n",
+	       stats1.current_cycles, k_cyc_to_ticks_near64(stats1.current_cycles));
+
+	printk("stats2.current_cycles = %llu -> tick=%lld\n",
+	       stats2.current_cycles, k_cyc_to_ticks_near64(stats2.current_cycles));
+	printk("stats3.current_cycles = %llu -> tick=%lld\n",
+	       stats3.current_cycles, k_cyc_to_ticks_near64(stats3.current_cycles));
+	printk("stats4.current_cycles = %llu -> tick=%lld\n",
+	       stats4.current_cycles, k_cyc_to_ticks_near64(stats4.current_cycles));
+	printk("stats5.current_cycles = %llu -> tick=%lld\n",
+	       stats5.current_cycles, k_cyc_to_ticks_near64(stats5.current_cycles));
+#endif
+
 #ifdef CONFIG_SCHED_THREAD_USAGE_ANALYSIS
 	zassert_true(stats4.current_cycles <= stats1.current_cycles);
 	zassert_true(stats5.current_cycles > stats4.current_cycles);
@@ -169,6 +202,9 @@ ZTEST(usage_api, test_all_stats_usage)
 	 */
 	zassert_equal(k_cyc_to_ticks_near64(stats4.peak_cycles),
 		      k_cyc_to_ticks_near64(stats3.peak_cycles), NULL);
+
+	//zassert_true(stats4.peak_cycles - stats3.peak_cycles < k_ticks_to_cyc_near64(1));
+
 	zassert_true(stats4.peak_cycles == stats5.peak_cycles);
 
 	zassert_true(stats4.average_cycles > 0);
